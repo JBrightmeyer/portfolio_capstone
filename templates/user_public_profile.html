@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+<div class="row mb-5 w-100 justify-content-between">
+    <div class="col-4" style="height:45vh;">
+        <div class="card h-100" style="width: 18rem;">
+            <img src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">{{current_user.first_name}} {{current_user.last_name}}</h5>
+              <p class="card-text">Github URL</p>
+              <p class="card-text">LinkedIn URL</p>
+              <p class="card-text">Portfolio URL</p>
+            </div>
+          </div>
+    </div>
+    <div class="col text-center" style="height:45vh; ">
+        
+        <ul class="list-group h-100">
+            <h5>About Me</h5>
+        <li class="list-group-item h-50 overflow-auto" style="border:none;">
+        <p >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat dolorum fugit aspernatur at sapiente enim ipsa ab repudiandae obcaecati ullam? Sit vel sint corporis ducimus amet voluptatibus animi impedit iure? Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit eaque eius esse necessitatibus laudantium tempore? Quia, illo amet! Laboriosam dolorum provident at voluptatibus nihil aut doloribus quos atque odit ut. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti nisi perferendis nam amet fugit provident veritatis porro enim delectus rem et necessitatibus ex architecto, repellendus ut assumenda, iste quam eveniet.</p>
+    </li>
+    <h5>Skills</h5>
+    <li class="list-group-item h-50 overflow-auto">
+        
+        <ul class="list-group align-bottom overflow-auto">
+            <li class="list-group-item">
+                Skill 1
+            </li>
+            <li class="list-group-item">
+                Skill 2
+            </li>
+            <li class="list-group-item">
+                Skill 3
+            </li>
+            <li class="list-group-item">
+                Skill 4
+            </li>
+            <li class="list-group-item">
+                Skill 5
+            </li>
+            <li class="list-group-item">
+                Skill 6
+            </li>
+            <li class="list-group-item">
+                Skill 7
+            </li>
+        </ul>
+    </li>
+    </ul>
+    </div>
+</div>
+<div class="row">
+    <h1>Work Experience</h1>
+    <hr>
+    <ul class="list-group w-75 " style="margin-left:20px;">
+        {% for job in jobs %}
+        <li class="list-group-item mb-2 border-left border-3 border-right-0 border-top-0 border-bottom-0" margin-left:20px;">
+            <div class="row text-center">
+                <div class="col-md-auto">
+                    <h4>{{job.title}}</h4>
+                </div>
+                <div class="col-md-auto">
+                    <h5>{{job.company}}</h5>
+                </div>
+                <div class="col-md-auto">
+                    <p>{{job.start_date}} - {{ job.end_date if job.current == "False" else "Present" }}</p>
+                </div>
+            </div>
+            {% for responsibility in job.responsibilities %}
+                <p>{{responsibility.description}}</p>
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="row">
+    <h1>Education</h1>
+    <hr>
+    <ul class="list-group w-75 " style="margin-left:20px;">
+        {% for degree in education %}
+            <li class="list-group-item mb-2 border-left border-3 border-right-0 border-top-0 border-bottom-0">
+            <h4>{{degree.degree}}</h4>
+            <h5>{{degree.institution}}</h5>
+            <p>{{degree.start_date}} - {{degree.graduation_date if degree.graduated == "True" else degree.graduation_date }} (projected)</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+</div>
+{% endblock %}

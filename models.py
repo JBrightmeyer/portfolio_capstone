@@ -23,11 +23,12 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String)
     type = db.Column(db.String,
                      default="basic")
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime,
+                           default=datetime.today())
     
     jobs = db.Relationship("Job")
-    projects = db.Relationship("Project")
-    education = db.Relationship("Education")
+    projects = db.Relationship("Project", cascade="all, delete")
+    education = db.Relationship("Education", cascade="all, delete")
     
 
     @classmethod 
@@ -37,16 +38,17 @@ class User(UserMixin, db.Model):
 
 
     @classmethod
-    def register(cls, name, username, password):
+    def register(cls, first_name, last_name, username, password):
         hash = bcrypt.generate_password_hash(password).decode("utf8")
         user = User(
             username = username,
             password = hash,
-            name = name
+            first_name = first_name,
+            last_name = last_name
         )
         db.session.add(user)
         db.session.commit()
-        return cls(username=username, password=hash, name=name)
+        return (user)
     
     @classmethod
     def authenticate(cls, username, password):
@@ -90,27 +92,23 @@ class Job(db.Model):
                    autoincrement=True)
     title = db.Column(db.Text)
     company = db.Column(db.Text)
-    start_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime,
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date,
                          nullable=False)
     current = db.Column(db.Boolean)
     user = db.Column(db.ForeignKey("users.id"))
-    
-    responsibilities = db.Relationship("Responsibility", secondary="jobs_responsibilities", backref="jobs")
+    description = db.Column(db.Text)
     
     
     @classmethod 
     def serialize_job(cls, job):
-        resps = job.responsibilities 
-        resp_serial = []
-        for resp in resps:
-            resp_serial.append(Responsibility.serialize_responsibility(resp))
-        return {"title":job.title,
+        return {"id":job.id,
+                "title":job.title,
                 "company": job.company,
                 "start_date": job.start_date,
                 "end_date":job.end_date,
                 "current":job.current,
-                "responsibilities":resp_serial}
+                "description":job.description}
         
 class Education(db.Model):
     
@@ -144,22 +142,9 @@ class Responsibility(db.Model):
                    primary_key=True,
                    autoincrement=True)
     description = db.Column(db.String)
+    job = db.Column(db.ForeignKey("jobs.id"))
     
     @classmethod 
     def serialize_responsibility(cls, responsibility):
         return {"id":responsibility.id, "description":responsibility.description}
-    
-class Job_Responsibility(db.Model):
-    
-    __tablename__ = "jobs_responsibilities"
-    
-    responsibility = db.Column(db.ForeignKey("responsibilities.id"),
-                               primary_key=True)
-    job = db.Column(db.ForeignKey("jobs.id"),
-                    primary_key=True)
-    
-class Skill(db.Model):
-    
-    __tablename__ "skills"
-    
     

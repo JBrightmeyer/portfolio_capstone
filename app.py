@@ -225,6 +225,14 @@ def edit_user_education(userid, eduid):
         return redirect(url_for("edit_profile", userid=userid))
     return render_template("/edit/education_edit.html", form=form, school=school)
 
+#TEST ROUTE
+@app.route("/portfolio/<int:userid>")
+def get_portfolio(userid):
+    # user = User.query.get(userid)
+    # projects = user.projects
+    return render_template("portfolio.html", userid=userid)
+
+
 ###############################################################################
 #API
 

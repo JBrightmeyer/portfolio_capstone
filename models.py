@@ -26,8 +26,10 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime,
                            default=datetime.today())
     
+    projects = db.Relationship("Project", secondary="repositories", backref="users")
+    
     jobs = db.Relationship("Job")
-    projects = db.Relationship("Project", cascade="all, delete")
+    # projects = db.Relationship("Project", cascade="all, delete")
     education = db.Relationship("Education", cascade="all, delete")
     
 
@@ -59,18 +61,18 @@ class User(UserMixin, db.Model):
             return False
     
     
-class Project(db.Model):
+# class Project(db.Model):
     
-    __tablename__ = "projects"
+#     __tablename__ = "projects"
     
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   autoincrement=True)
-    title = db.Column(db.String)
-    description = db.Column(db.String)
-    owner = db.Column(db.ForeignKey("users.id"))
-    github_url = db.Column(db.String)
-    last_modified = db.Column(db.DateTime)
+#     id = db.Column(db.Integer,
+#                    primary_key=True,
+#                    autoincrement=True)
+#     title = db.Column(db.String)
+#     description = db.Column(db.String)
+#     owner = db.Column(db.ForeignKey("users.id"))
+#     github_url = db.Column(db.String)
+#     last_modified = db.Column(db.DateTime)
     
 class Comment(db.Model):
     
@@ -147,4 +149,25 @@ class Responsibility(db.Model):
     @classmethod 
     def serialize_responsibility(cls, responsibility):
         return {"id":responsibility.id, "description":responsibility.description}
+    
+class Repository(db.Model):
+    
+    __tablename__ = "repositories"
+    
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    user = db.Column(db.ForeignKey("users.id"))
+    repository = db.Column(db.String)
+    owner_name = db.Column(db.String)
+
+class Project(db.Model):
+    
+    __tablename__ = "projects"
+    
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    repository = db.Column(db.ForeignKey("repositories.id"))
+    name = db.Column(db.String)
     

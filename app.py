@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request, redirect, url_for, flash
+from flask import Flask, render_template, session, request, redirect, url_for, flash, jsonify
 from flask_login import current_user,logout_user, LoginManager, login_required, login_user, login_url
 from forms import LoginForm, JobForm, UserForm, EducationForm, CommentForm, UserCreateForm
 from models import db, connect_db, User, Project, Comment, Job, Responsibility, Education
@@ -228,9 +228,12 @@ def edit_user_education(userid, eduid):
 #TEST ROUTE
 @app.route("/portfolio/<int:userid>")
 def get_portfolio(userid):
-    # user = User.query.get(userid)
-    # projects = user.projects
-    return render_template("portfolio.html", userid=userid)
+    user = User.query.get(userid)
+    projects = user.projects
+    serial_projects = []
+    for project in projects:
+        serial_projects.append(Project.serialize_project(project))
+    return render_template("portfolio.html", userid=userid, projects = serial_projects)
 
 
 ###############################################################################
@@ -251,4 +254,12 @@ def edit_user_profile(userid):
         db.session.add(job)
         db.session.commit()
         return Job.serialize_job(job)
+    
+@app.route("/api/projects/<int:userid>")
+def get_projects(userid):
+    projects = Project.query.filter_by(user_id=userid)
+    serial_projects = []
+    for project in projects:
+        serial_projects.append(Project.serialize_project(project))
+    return jsonify(serial_projects)
 

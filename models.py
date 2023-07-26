@@ -26,10 +26,8 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime,
                            default=datetime.today())
     
-    projects = db.Relationship("Project", secondary="repositories", backref="users")
-    
+    projects = db.Relationship("Project", backref="users")
     jobs = db.Relationship("Job")
-    # projects = db.Relationship("Project", cascade="all, delete")
     education = db.Relationship("Education", cascade="all, delete")
     
 
@@ -59,20 +57,6 @@ class User(UserMixin, db.Model):
             return user 
         else:
             return False
-    
-    
-# class Project(db.Model):
-    
-#     __tablename__ = "projects"
-    
-#     id = db.Column(db.Integer,
-#                    primary_key=True,
-#                    autoincrement=True)
-#     title = db.Column(db.String)
-#     description = db.Column(db.String)
-#     owner = db.Column(db.ForeignKey("users.id"))
-#     github_url = db.Column(db.String)
-#     last_modified = db.Column(db.DateTime)
     
 class Comment(db.Model):
     
@@ -150,16 +134,6 @@ class Responsibility(db.Model):
     def serialize_responsibility(cls, responsibility):
         return {"id":responsibility.id, "description":responsibility.description}
     
-class Repository(db.Model):
-    
-    __tablename__ = "repositories"
-    
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   autoincrement=True)
-    user = db.Column(db.ForeignKey("users.id"))
-    repository = db.Column(db.String)
-    owner_name = db.Column(db.String)
 
 class Project(db.Model):
     
@@ -168,6 +142,26 @@ class Project(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    repository = db.Column(db.ForeignKey("repositories.id"))
-    name = db.Column(db.String)
+    title = db.Column(db.String)
+    repository = db.Column(db.String)
+    project_name = db.Column(db.String)
+    owner_name = db.Column(db.String)
+    display_picture_url = db.Column(db.String)
+    github_url = db.Column(db.String)
+    website_url = db.Column(db.String,
+                            nullable=True)
+    description = db.Column(db.Text)
+    user_id = db.Column(db.ForeignKey("users.id"))
     
+    @classmethod
+    def serialize_project(cls, project):
+        return {"id": project.id,
+                "repository":project.repository,
+                "project_name":project.project_name,
+                "owner_name":project.owner_name,
+                "display_picture_url":project.display_picture_url,
+                "github_url":project.github_url,
+                "website_url":project.website_url,
+                "title":project.title,
+                "description":project.description,
+                "user_id":project.user_id}

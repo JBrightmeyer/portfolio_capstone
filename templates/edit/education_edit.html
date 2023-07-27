@@ -4,7 +4,8 @@
 {% block content %}
 
 <div class="d-flex align-items-center" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-info border-5 rounded-5" action="/users/{{current_user.id}}/education/{{school.id}}/edit" method="POST" id="edit-school">
+    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/{{current_user.id}}/education/{{school.id}}/edit" method="POST" id="edit-school">
+        <h5 class="text-center">Edit Education</h5>
         <div class="form-group ">
             {{ form.hidden_tag() }}
             {% for field in form if field.widget.input_type != "hidden" %}   
@@ -17,9 +18,12 @@
                 {{field(class_="form-control")}}
                 {% endif %}
                 </div>
+                {% for error in field.errors %}
+                <div class=" alert alert-danger">{{ error }}</div>
+                {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-primary" form="edit-school">Edit Education</button>
+        <button type="submit" class="btn btn-warning" form="edit-school">Edit Education</button>
         <button type="submit" class="btn btn-danger" form="delete-school">Delete Education</button>
     </form>
     <form action="/users/{{current_user.id}}/education/{{school.id}}/delete" method="POST" id="delete-school">

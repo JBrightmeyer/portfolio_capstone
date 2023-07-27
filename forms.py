@@ -21,13 +21,21 @@ class UserForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired()])
     first_name = StringField("First Name", validators=[InputRequired()])
     last_name = StringField("Last Name", validators=[InputRequired()])
+    github_url = StringField("Github URL (optional)", validators=[URL(), Optional()])
+    linkedin_url = StringField("LinkedIn URL (optional)", validators=[URL(), Optional()])
+    website_url = StringField("Website URL (optional)", validators=[URL(), Optional()])
+    about_me = TextAreaField("About Me", validators=[Optional()])
     
 class UserCreateForm(FlaskForm):
     
     username = StringField("Username", validators=[InputRequired()])
     first_name = StringField("First Name", validators=[InputRequired()])
     last_name = StringField("Last Name", validators=[InputRequired()])
-    password = StringField("Password", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
+    github_url = StringField("Github URL (optional)", validators=[URL(), Optional()])
+    linkedin_url = StringField("LinkedIn URL (optional)", validators=[URL(), Optional()])
+    website_url = StringField("Website URL (optional)", validators=[URL(), Optional()])
+    about_me = TextAreaField("About Me", validators=[Optional()])
 
 class EducationForm(FlaskForm):
     
@@ -42,3 +50,17 @@ class CommentForm(FlaskForm):
     name = StringField("Name/Institution", validators=[InputRequired()])
     comment = StringField("Comment", validators=[InputRequired()])
     
+class SkillForm(FlaskForm):
+    
+    description = StringField("Skill", validators=[InputRequired()])
+    
+class ProjectForm(FlaskForm):
+    
+    title = StringField("Title", validators=[InputRequired()])
+    repository = StringField("Github Repository Name", validators=[InputRequired()])
+    project_name = StringField("Github Project Name", validators=[InputRequired()])
+    owner_name = StringField("Github Repository Owner Name", validators=[InputRequired()])
+    display_picture_url = StringField("Display Picture URL", validators=[URL(), Optional()])
+    github_url = StringField("Github URL", validators=[URL(), Optional()])
+    website_url = StringField("Deployed URL", validators=[URL(), Optional()])
+    description = TextAreaField("Title", validators=[InputRequired()])

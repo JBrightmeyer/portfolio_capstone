@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if error %}
+    <div class=" alert alert-danger">{{ error }}</div>
+{% endif %}
 <div class="d-flex align-items-center" style="min-height:75vh;">
     <form class = "w-50 p-3 m-auto border border-info border-5 rounded-5" action="/login" method="POST">
         <div class="form-group ">

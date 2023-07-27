@@ -17,35 +17,55 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    username = db.Column(db.String)
+    username = db.Column(db.String,
+                         unique=True)
+    profile_picture_url = db.Column(db.String,
+                                    default="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-139.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=df5cf03ba78dce75d913bb39d9e75a93")
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
     password = db.Column(db.String)
-    type = db.Column(db.String,
-                     default="basic")
+    about_me = db.Column(db.String,
+                         nullable=True)
+    github_url = db.Column(db.String,
+                           nullable=True)
+    linkedin_url = db.Column(db.String,
+                             nullable=True)
+    website_url = db.Column(db.String,
+                            nullable=True)
     created_at = db.Column(db.DateTime,
                            default=datetime.today())
     
-    projects = db.Relationship("Project", backref="users")
-    jobs = db.Relationship("Job")
-    education = db.Relationship("Education", cascade="all, delete")
+    projects = db.Relationship("Project", backref="users", cascade="all, delete")
+    jobs = db.Relationship("Job", backref="users", cascade="all, delete")
+    education = db.Relationship("Education", backref="users", cascade="all, delete")
+    skills = db.Relationship("Skill", backref="users", cascade="all, delete")
     
 
     @classmethod 
     def serialize_user(cls,user):
-        return {"first_name":user.first_name,
-                "last_name":user.last_name}
+        return {"id":user.id,
+                "first_name":user.first_name,
+                "last_name":user.last_name,
+                "about_me":user.about_me,
+                "github_url":user.github_url,
+                "linkedin_url":user.linkedin_url,
+                "website_url":user.website_url,
+                "profile_picture_url":user.profile_picture_url}
 
 
     @classmethod
-    def register(cls, first_name, last_name, username, password):
+    def register(cls, first_name, last_name, username, password, about_me, github_url = "", linkedin_url = "", website_url = ""):
         hash = bcrypt.generate_password_hash(password).decode("utf8")
         user = User(
             username = username,
             password = hash,
             first_name = first_name,
-            last_name = last_name
-        )
+            last_name = last_name,
+            about_me = about_me,
+            github_url = github_url,
+            linkedin_url = linkedin_url,
+            website_url = website_url)
+        
         db.session.add(user)
         db.session.commit()
         return (user)
@@ -119,20 +139,22 @@ class Education(db.Model):
                 "start_date":education.start_date,
                 "graduated":education.graduated}
     
+class Skill(db.Model):
     
-class Responsibility(db.Model):
-    
-    __tablename__ = "responsibilities"
+    __tablename__ = "skills"
     
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
     description = db.Column(db.String)
-    job = db.Column(db.ForeignKey("jobs.id"))
+    user = db.Column(db.ForeignKey("users.id"))
     
-    @classmethod 
-    def serialize_responsibility(cls, responsibility):
-        return {"id":responsibility.id, "description":responsibility.description}
+    @classmethod
+    def serialize_skill(cls, skill):
+        return {"id":skill.id,
+                "description":skill.description,
+                "user":skill.user}
+    
     
 
 class Project(db.Model):
@@ -146,7 +168,8 @@ class Project(db.Model):
     repository = db.Column(db.String)
     project_name = db.Column(db.String)
     owner_name = db.Column(db.String)
-    display_picture_url = db.Column(db.String)
+    display_picture_url = db.Column(db.String,
+                                    default="https://cdn-icons-png.flaticon.com/512/718/718110.png")
     github_url = db.Column(db.String)
     website_url = db.Column(db.String,
                             nullable=True)

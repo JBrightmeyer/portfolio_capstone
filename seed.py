@@ -1,26 +1,22 @@
-from models import db, connect_db, User, Project, Comment, Job, Responsibility, Education
+from models import db, connect_db, User, Project, Comment, Job, Education, Skill
 from app import app 
 
 db.session.commit()
 db.drop_all()
 db.create_all()
 
-user = User.register("Test","Test", "test", "test")
+user = User.register("Test","Test", "test", "test", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.")
 
 for i in range(3):
     job = Job(title=f"Job Title {i}",
               company = "test company",
-              start_date = "7/5/2020",
-              end_date="7/5/2023",
+              start_date = f"7/{5 + i}/2020",
+              end_date=f"7/{10+i}/2023",
               current=False,
               user=user.id,
-              description="This is a test description for a job")
+              description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum ullam animi tenetur? Autem amet porro aspernatur molestiae facere voluptatibus, ex maxime delectus velit impedit, unde et animi ea quisquam! Sequi.")
     db.session.add(job)
     db.session.commit()
-    for j in range(3):
-        resp = Responsibility(description=f"Hello I am a test description {j}", job=job.id)
-        db.session.add(resp)
-        db.session.commit()
         
 
 for i in range(2):
@@ -43,3 +39,11 @@ project = Project(repository="portfolio_capstone",
                   user_id=1)
 db.session.add(project)
 db.session.commit()
+
+skills = ["Swift as a coursing river", "All the force of a great typhoon", "All the Strength of a raging fire", "Mysterious as the dark side of the moon"]
+
+for skill in skills:
+    new_skill = Skill(user=user.id,
+                      description = skill)
+    db.session.add(new_skill)
+    db.session.commit()

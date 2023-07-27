@@ -182,6 +182,10 @@ def edit_user(userid):
 @app.route("/users/<int:userid>/delete", methods=["POST"])
 @login_required 
 def delete_user(userid):
+    """POST: Deletes user
+    Args:
+        userid (int): id of user being queried
+    """
     logout_user()
     user = User.query.get(userid)
     db.session.delete(user)
@@ -240,6 +244,11 @@ def edit_user_job(userid, jobid):
 @app.route("/users/<int:userid>/jobs/<int:jobid>/delete", methods=["POST"])
 @login_required 
 def delete_job(userid, jobid):
+    """POST: Deletes Job
+    Args:
+        jobid (int): id of job being queried
+        userid (int): id of user being queried
+    """
     job = Job.query.get(jobid)
     db.session.delete(job)
     db.session.commit()
@@ -295,6 +304,11 @@ def edit_user_education(userid, eduid):
 @app.route("/users/<int:userid>/education/<int:eduid>/delete", methods=["POST"])
 @login_required 
 def delete_education(userid, eduid):
+    """POST: Deletes Education
+    Args:
+        eduid (int): id of education being queried
+        userid (int): id of user being queried
+    """
     edu = Education.query.get(eduid)
     db.session.delete(edu)
     db.session.commit()
@@ -355,6 +369,11 @@ def edit_user_project(userid, projectid):
 @app.route("/users/<int:userid>/projects/<int:projectid>/delete", methods=["POST"])
 @login_required 
 def delete_project(userid, projectid):
+    """POST: Deletes Project
+    Args:
+        projectid (int): id of project being queried
+        userid (int): id of user being queried
+    """
     project = Project.query.get(projectid)
     db.session.delete(project)
     db.session.commit()
@@ -369,6 +388,11 @@ def delete_project(userid, projectid):
 @app.route("/users/<int:userid>/skills/add", methods=["GET", "POST"])
 @login_required 
 def add_user_skill(userid):
+    """POST: Validates the form, adds skill to current user
+        GET: Renders SkillForm
+    Args:
+        userid (int): id of user being queried
+    """
     form = SkillForm()
     if form.validate_on_submit():
         skill = Skill(description=form.description.data, user=userid)
@@ -380,6 +404,12 @@ def add_user_skill(userid):
 @app.route("/users/<int:userid>/skills/<int:skillid>/edit", methods=["GET", "POST"])
 @login_required 
 def edit_user_skill(userid, skillid):
+    """POST: Validates the form, edits the skill based on form changes
+        GET: Renders SkillForm with fields populated with current skill data
+    Args:
+        userid (int): id of user being queried
+        skillid (int): id of skill being queried
+    """
     skill = Skill.query.get(skillid) 
     form = SkillForm(obj=skill)
     if form.validate_on_submit():
@@ -391,6 +421,11 @@ def edit_user_skill(userid, skillid):
 @app.route("/users/<int:userid>/skills/<int:skillid>/delete", methods=["POST"])
 @login_required 
 def delete_skill(userid, skillid):
+    """POST: Deletes Skill
+    Args:
+        skillid (int): id of skill being queried
+        userid (int): id of user being queried
+    """
     skill = Skill.query.get(skillid)
     db.session.delete(skill)
     db.session.commit()
@@ -402,6 +437,10 @@ def delete_skill(userid, skillid):
 
 @app.route("/portfolios/<int:userid>/view")
 def get_portfolio(userid):
+    """Renders public portfolio view of a user, This does not include editing capabilities
+    Args:
+        userid (int): id of user being queried
+    """
     user = User.query.get(userid)
     projects = user.projects
     serial_projects = []
@@ -413,6 +452,10 @@ def get_portfolio(userid):
 @app.route("/portfolios/<int:userid>/edit")
 @login_required
 def edit_portfolio(userid):
+    """Renders private portfolio view of a user, This includes editing capabilities
+    Args:
+        userid (int): id of user being queried
+    """
     user = User.query.get(userid)
     projects = user.projects
     serial_projects = []
@@ -427,6 +470,14 @@ def edit_portfolio(userid):
     
 @app.route("/api/projects/<int:userid>")
 def get_projects(userid):
+    """returns the serialized list of projects associated with a user
+
+    Args:
+        userid (int): user being queried
+
+    Returns:
+        list: list of dictionaries representing serialized projects associated with a user
+    """
     projects = Project.query.filter_by(user_id=userid)
     serial_projects = []
     for project in projects:

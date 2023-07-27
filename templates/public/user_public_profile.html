@@ -55,11 +55,11 @@
     </div>
 </div>
 <div class="row">
-    <h1 class="bg-dark text-light border border-3 border-warning rounded-3 p-2 m-auto" style="width:75vw;">Work Experience</h1>
+    <h1 class="bg-dark text-light border border-3 border-warning rounded-3 p-2 m-auto" style="width:80vw;">Work Experience</h1>
     <hr>
-    <ul class="list-group w-100 overflow-auto" style="max-height:65vh; margin-left:20px;">
+    <ul class="list-group w-100 overflow-auto" style="max-height:65vh; ">
         {% for job in jobs %}
-        <li class="list-group-item border border-3 border-warning bg-dark text-light " style="margin-left:20px; margin-right:40px;">
+        <li class="list-group-item border border-3 border-warning bg-dark text-light " >
             <div class="row">
                 <div class="col-md-auto">
                     <h4>{{job.title}}</h4>
@@ -83,11 +83,11 @@
     </ul>
 </div>
 <div class="row">
-    <h1 class="bg-dark text-light border border-3 border-warning rounded-3 p-2 mt-5 m-auto" style="width:75vw;">Education</h1>
+    <h1 class="bg-dark text-light border border-3 border-warning rounded-3 p-2 mt-5 m-auto" style="width:80vw;">Education</h1>
     <hr>
-    <ul class="list-group w-100 overflow-auto" style="max-height:40vh; margin-left:20px;">
+    <ul class="list-group w-100 overflow-auto" style="max-height:40vh;">
         {% for degree in education %}
-            <li class="list-group-item border border-3 border-warning bg-dark text-light" style="margin-left:20px; margin-right:40px;">
+            <li class="list-group-item border border-3 border-warning bg-dark text-light">
             <div class="row">
                 <div class="col md-auto">
                 <h4>{{degree.degree}}</h4>

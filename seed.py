@@ -5,8 +5,10 @@ db.session.commit()
 db.drop_all()
 db.create_all()
 
+#registers test user
 user = User.register("Test","Test", "test", "test", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.")
 
+#adds test job titles
 for i in range(3):
     job = Job(title=f"Job Title {i}",
               company = "test company",
@@ -19,6 +21,7 @@ for i in range(3):
     db.session.commit()
         
 
+#adds test educations
 for i in range(2):
     degree = Education(institution=f"Test School {i}",
                        degree=f"Test Degree {i}",
@@ -29,6 +32,7 @@ for i in range(2):
     db.session.add(degree)
     db.session.commit()
     
+#adds example project which is my own
 project = Project(repository="portfolio_capstone",
                   project_name="portfolio_capstone",
                   owner_name="JBrightmeyer",
@@ -40,8 +44,8 @@ project = Project(repository="portfolio_capstone",
 db.session.add(project)
 db.session.commit()
 
+#adds example skills
 skills = ["Swift as a coursing river", "All the force of a great typhoon", "All the Strength of a raging fire", "Mysterious as the dark side of the moon"]
-
 for skill in skills:
     new_skill = Skill(user=user.id,
                       description = skill)

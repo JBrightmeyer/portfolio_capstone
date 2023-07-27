@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5" data-id="{{current_user.id}}" id="user-profile-container" style="position:relative;">
-    <div class="btn btn-info" id="share-button" style="position:absolute; right:0; z-index:10;">Share Profile</div>
+<div class="container mt-5" data-id="{{current_user.id}}" id="user-profile-container" style="width:80vw; position:relative;">
+    
 <div class="row mb-5 w-100 justify-content-between">
+    
     <div class="col-4" style="height:45vh;">
-        <div class="card h-100" style="width: 18rem;">
-            <img src="{{user.profile_picture_url}}" class="card-img-top" style="height:28vh; object-fit:fill;">
+        <div class="card h-100 bg-dark text-light border border-3 border-warning" style="width: 18rem;">
+            <img src="{{user.profile_picture_url}}" class="card-img-top p-2" style="height:28vh; object-fit:fill;">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
@@ -14,7 +15,7 @@
                         <h5 class="card-title">{{current_user.last_name}}</h5>
                     </div>
                     <div class="col" style="text-align:right;">
-                        <a class="btn btn-success" href="/users/{{current_user.id}}/edit">
+                        <a class="btn btn-warning" href="/users/{{current_user.id}}/edit">
                             Edit
                           </a>
                     </div>
@@ -34,26 +35,27 @@
             </div>
           </div>
     </div>
-    <div class="col text-center" style="height:45vh; ">
+    <div class="col text-center bg-dark text-light border border-3 border-warning rounded-3 p-2" style="height:45vh; position:relative; ">
+        <div class="btn btn-warning" id="share-button" style="position:absolute; right:0; z-index:10; margin-right:10px;">Share Profile</div>
         
         <ul class="list-group h-100">
             
             <h5>About Me</h5>
-        <li class="list-group-item h-50 overflow-auto" style="border:none;">
+        <li class="list-group-item h-50 overflow-auto rounded bg-dark text-light" style="border:none;">
         <p >{{user.about_me}}</p>
     </li>
     <h5>Skills</h5>
-    <li class="list-group-item h-50 overflow-auto">
+    <li class="list-group-item h-50 overflow-auto bg-dark text-light rounded" style="border:none;">
         
         <ul class="list-group align-bottom overflow-auto">
             {% for skill in skills %}
-            <li class="list-group-item">
+            <li class="list-group-item bg-dark text-light border-warning">
                 <div class="row">
                     <div class="col">
                         {{skill.description}}
                     </div>
                     <div class="col-md-auto" style="text-align:right;">
-                        <a class="btn btn-success" href="/users/{{current_user.id}}/skills/{{skill.id}}/edit">
+                        <a class="btn btn-warning" href="/users/{{current_user.id}}/skills/{{skill.id}}/edit">
                             Edit
                         </a>
                     </div>
@@ -61,7 +63,7 @@
             </li>
             {% endfor %}
             <a class = "text-decoration-none" href="/users/{{current_user.id}}/skills/add">
-                <li class="text-center border-3 rounded border-success list-group-item mb-2">
+                <li class="text-center border-3 rounded btn-warning btn mb-2 mt-2">
                     Add Skill
                 </li>
             </a>
@@ -71,11 +73,11 @@
     </div>
 </div>
 <div class="row">
-    <h1>Work Experience</h1>
+    <h1 class="bg-dark text-light border border-3 border-warning rounded-3 p-2 m-auto" style="width:75vw;">Work Experience</h1>
     <hr>
     <ul class="list-group w-100 overflow-auto" style="max-height:65vh; margin-left:20px;">
         {% for job in jobs %}
-        <li class="list-group-item mb-2 border-left border-3 border-right-0 border-top-0 border-bottom-0" style="margin-left:20px;">
+        <li class="list-group-item border border-3 border-warning bg-dark text-light " style="margin-left:20px; margin-right:40px;">
             <div class="row">
                 <div class="col-md-auto">
                     <h4>{{job.title}}</h4>
@@ -87,7 +89,7 @@
                     <h5>{{job.company}}</h5>
                 </div>
                 <div class="col" style="text-align:right;">
-                    <a class="btn btn-success" href="/users/{{current_user.id}}/jobs/{{job.id}}/edit">
+                    <a class="btn btn-warning" href="/users/{{current_user.id}}/jobs/{{job.id}}/edit">
                         Edit
                     </a>
                 </div>
@@ -95,25 +97,25 @@
             <div class="row">
                 <p>{{job.start_date}} - {{ job.end_date if job.current == false else "Present" }} </p>
             </div>
+            <hr class="m-0 p-0" style="height:1px;">
             <div class="row overflow-auto" style="height:8vh;">
                 <p>{{job.description}}</p>
             </div>
-            
         </li>
         {% endfor %}
         <a class = "text-decoration-none" href="/users/{{current_user.id}}/jobs/add">
-            <li class="text-center border-3 rounded border-success list-group-item mb-2" style="margin-left:20px;">
+            <li class="text-center border-3 rounded btn-warning btn mb-2 mt-2" style="margin-left:20px; margin-right:40px;">
                 Add Job
             </li>
         </a>
     </ul>
 </div>
 <div class="row">
-    <h1>Education</h1>
+    <h1 class="bg-dark text-light border border-3 border-warning rounded-3 p-2 mt-2 m-auto" style="width:75vw;">Education</h1>
     <hr>
-    <ul class="list-group w-100 overflow-auto" style="max-height:35vh; margin-left:20px;">
+    <ul class="list-group w-100 overflow-auto" style="max-height:40vh; margin-left:20px;">
         {% for degree in education %}
-            <li class="list-group-item mb-2 border-left border-3 border-right-0 border-top-0 border-bottom-0" style="margin-left:20px;">
+            <li class="list-group-item border border-3 border-warning bg-dark text-light" style="margin-left:20px; margin-right:40px;">
             <div class="row">
                 <div class="col md-auto">
                 <h4>{{degree.degree}}</h4>
@@ -121,7 +123,7 @@
             <p>{{degree.start_date}} - {{degree.graduation_date if degree.graduated == "True" else degree.graduation_date }} (projected)</p>
         </div>
         <div class="col" style="text-align:right;">
-            <a class="btn btn-success" href="/users/{{current_user.id}}/education/{{degree.id}}/edit">
+            <a class="btn btn-warning" href="/users/{{current_user.id}}/education/{{degree.id}}/edit">
                 Edit
             </a>
         </div>
@@ -129,7 +131,7 @@
         </li>
         {% endfor %}
         <a class = "text-decoration-none" href="/users/{{current_user.id}}/education/add">
-            <li class="text-center border-3 rounded border-success list-group-item mb-2" style="margin-left:20px;">
+            <li class="text-center border-3 rounded btn-warning btn mb-2 mt-2" style="margin-left:20px; margin-right:40px;">
                 Add Education
             </li>
         </a>

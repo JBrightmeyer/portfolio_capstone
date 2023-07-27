@@ -63,4 +63,4 @@ class ProjectForm(FlaskForm):
     display_picture_url = StringField("Display Picture URL", validators=[URL(), Optional()])
     github_url = StringField("Github URL", validators=[URL(), Optional()])
     website_url = StringField("Deployed URL", validators=[URL(), Optional()])
-    description = TextAreaField("Title", validators=[InputRequired()])
+    description = TextAreaField("Description", validators=[InputRequired()])

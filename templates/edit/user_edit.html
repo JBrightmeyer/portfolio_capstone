@@ -2,18 +2,30 @@
 
 
 {% block content %}
-<div class="d-flex align-items-center" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-info border-5 rounded-5" action="/users/{{current_user.id}}/edit" method="POST">
+{% if error %}
+    <div class=" alert alert-danger">{{ error }}</div>
+{% endif %}
+<div class="d-flex align-items-center mt-5" style="min-height:75vh;">
+    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/{{current_user.id}}/edit" method="POST" id="edit-user">
+        <h5 class="text-center">Edit User</h5>
         <div class="form-group ">
             {{ form.hidden_tag() }}
+            
             {% for field in form if field.widget.input_type != "hidden" %} 
+            
                 <div class="form-group mb-2">
                     {{field.label}} 
                     {{field(class_="form-control")}} 
                 </div>
+                {% for error in field.errors %}
+                <div class=" alert alert-danger">{{ error }}</div>
+               {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-warning" form="edit-user">Edit User</button>
+        <button type="submit" class="btn btn-danger" form="delete-user">Delete User</button>
+    </form>
+    <form action="/users/{{current_user.id}}/delete" method="POST" id="delete-user">
     </form>
 </div>
 <!-- scripts below -->

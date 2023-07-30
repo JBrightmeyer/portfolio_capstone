@@ -3,11 +3,11 @@
 
 {% block content %}
 {% if error %}
-    <div class=" alert alert-danger text-center m-auto mt-3" style="width:50%;">{{ error }}</div>
+    <div class=" alert alert-danger">{{ error }}</div>
 {% endif %}
-<div class="d-flex align-items-center mt-5" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/add" method="POST">
-        <h5 class="text-center">Register</h5>
+<div class="d-flex align-items-center" style="min-height:75vh;">
+    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/{{current_user.id}}/skills/{{skill}}/edit" method="POST" id="edit-skill">
+        <h5 class="text-center">Edit Skill</h5>
         <div class="form-group " id = "form-container">
             {{ form.hidden_tag() }}
             {% for field in form if field.widget.input_type != "hidden" %}
@@ -25,7 +25,10 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-warning">Submit</button>
+        <button type="submit" class="btn btn-warning" form="edit-skill">Edit Skill</button>
+        <button type="submit" class="btn btn-danger" form="delete-skill">Delete Skill</button>
+    </form>
+    <form action="/users/{{current_user.id}}/skills/{{skill.id}}/delete" method="POST" id="delete-skill">
     </form>
 </div>
 </body>

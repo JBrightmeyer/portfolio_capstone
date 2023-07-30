@@ -17,21 +17,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            {% if current_user.is_authenticated == True %}
-            <li class="nav-item active ">
-              <a class="nav-link" href="/">Profile</a>
+            <li class="nav-item active">
+              <a class="nav-link" href="/profiles/{{user.id}}/view">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/portfolios/{{current_user.id}}/edit">Portfolio</a>
-            </li>
-            <li class="nav-item me-auto">
-              <a class="nav-link" href="/logout">Logout</a>
-            </li>
-            {% else %}
-            <li class="nav-item me-auto">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            {% endif %}
+                <a class="nav-link" href="/portfolios/{{user.id}}/view">Portfolio</a>
+              </li>
             <li class="nav-item">
               <a class="nav-link" href="/comments/add">Submit Feedback</a>
             </li>

@@ -1,0 +1,66 @@
+{% extends "public_base.html" %}
+
+{% block content %}
+<div class="container" id="projects" data-id="{{user.id}}">
+
+</div>
+<div class="container mt-5 mb-5 m-auto pt-1  rounded" style="width:80vw; position:relative;">
+
+{% for project in projects %}
+    <div class="row mb-1 p-3" style="background-color:rgb(58, 58, 58);">
+        <div class="col-auto p-3 m-1 rounded-3 border border-warning border-3 text-light" style="background-color: rgb(58, 58, 58); ">
+            <div class="portfolio-picture-container" style="width:300px; height:200px;">
+                <img src="{{project.display_picture_url}}" style="width:100%; height:100%;">
+            </div>
+        </div>
+        <div class="col-auto p-3 m-1 rounded-3 border border-warning border-3 text-light" id="composition-graph" style="background-color:rgb(58, 58, 58);">
+            <div style="width: 200px; height:200px;" id="chart-container">
+                <img class = "rounded" src="https://img.freepik.com/free-icon/graph_318-10306.jpg" style="width:100%; height:100%;">
+            </div>
+        </div>
+        <div class="col m-1 p-3  rounded-3 border border-warning border-3 text-light"  style="background-color:rgb(58, 58, 58); position:relative;">
+            <div class="row" >
+                <h3>{{project.title}}</h3>
+            </div>
+            <div class="row overflow-auto mb-3 px-3" id="{{project.id}}decription" style="height:10vh">
+                {{project.description}}
+            </div>
+            <div class="row mt-2 text-center">
+                {% if project.github_url %}
+                <div class="col">
+                    <a class="btn btn-warning" href="{{project.github_url}}">Github</a>
+                </div>
+                {% endif %}
+                {% if project.website_url %}
+                <div class="col">
+                    <a class="btn btn-warning" href="{{project.website_url}}">Website</a>
+                </div>
+                {% endif %}
+                <div class="col">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#{{project.id}}">
+                        ReadMe
+                    </button>
+                    <div class="modal fade" id="{{project.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="height:40vh;">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">ReadMe for {{project.project_name}}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="{{project.id}}-readme">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    <script src="/static/portfolio.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.1/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+

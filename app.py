@@ -2,11 +2,17 @@ from flask import Flask, render_template, session, request, redirect, url_for, f
 from flask_login import current_user,logout_user, LoginManager, login_required, login_user, login_url
 from forms import LoginForm, JobForm, UserForm, EducationForm, CommentForm, UserCreateForm
 from models import db, connect_db, User, Project, Comment, Job, Responsibility, Education
+from urllib.parse import quote_plus
+
+password = 'Mike@ig4real'
+encoded_password = quote_plus(password)
+
+uri = f'postgresql://postgres:{encoded_password}@localhost:5432/portfolio'
 
 app = Flask(__name__)
 
 app.app_context().push()
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///portfolio"
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY']="admin"
 

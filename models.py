@@ -185,7 +185,10 @@ class Project(db.Model):
             "user_id": project.user_id,
         }
         
-        # Generally is more expensive to have to cumulate counts in a db query e.g 
+        # Generally, it is more expensive to have to cumulate counts in a db query e.g 
         # say a table user exists and a user would have followers, design wise its better to have a column called followers_count
         # that increments or decrements so it is not expensive to query the db for the number of followers a user has
         # to do that you would need triggers, doc on triggers at [https://www.postgresql.org/docs/9.1/sql-createtrigger.html]
+        # also look into different type sof relationships and how they could help with reducing complex queries
+        # [https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html]
+        # Remember that if you're going to be hosting this in a cloud environment, you would want to configure db infrastructure for postgres

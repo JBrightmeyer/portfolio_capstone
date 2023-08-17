@@ -286,7 +286,7 @@ def edit_user_job(userid, jobid):
 
 @app.route("/users/<int:userid>/jobs/<int:jobid>/delete", methods=["POST"])
 @login_required
-def delete_job(userid, jobid):
+def delete_job(_, jobid):
     """POST: Deletes Job
     Args:
         jobid (int): id of job being queried
@@ -351,7 +351,7 @@ def edit_user_education(userid, eduid):
 
 @app.route("/users/<int:userid>/education/<int:eduid>/delete", methods=["POST"])
 @login_required
-def delete_education(userid, eduid):
+def delete_education(_, eduid):
     """POST: Deletes Education
     Args:
         eduid (int): id of education being queried
@@ -422,7 +422,7 @@ def edit_user_project(userid, projectid):
 
 @app.route("/users/<int:userid>/projects/<int:projectid>/delete", methods=["POST"])
 @login_required
-def delete_project(userid, projectid):
+def delete_project(_, projectid):
     """POST: Deletes Project
     Args:
         projectid (int): id of project being queried
@@ -476,7 +476,7 @@ def edit_user_skill(userid, skillid):
 
 @app.route("/users/<int:userid>/skills/<int:skillid>/delete", methods=["POST"])
 @login_required
-def delete_skill(userid, skillid):
+def delete_skill(_, skillid):
     """POST: Deletes Skill
     Args:
         skillid (int): id of skill being queried

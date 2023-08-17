@@ -1,16 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import (
-    IntegerField,
-    FieldList,
     StringField,
     PasswordField,
-    SelectField,
     BooleanField,
-    SelectMultipleField,
     DateField,
     TextAreaField,
 )
-from wtforms.validators import URL, Optional, InputRequired, DataRequired
+from wtforms.validators import URL, Optional, InputRequired
 
 
 class LoginForm(FlaskForm):

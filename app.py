@@ -539,7 +539,8 @@ def get_projects(userid):
         list: list of dictionaries representing serialized projects associated with a user
     """
     projects = Project.query.filter_by(user_id=userid)
-    serial_projects = [Project.serialize_project(project) for project in projects]
+    serial_projects = [Project.serialize_project(project) for project in projects] 
     return jsonify(serial_projects)
 
 # Generally try to use this type of naming convention for your routes e.g 'userid' => 'user_id' or 'projectid' => 'project_id' etc. There are some other types like this too like camelCase, snake_case, kebab-case, etc. but generally you want to stick to one and be consistent with it.
+# If you'd notice i change most loops to list comprehensions, this is just a personal preference but it's generally more readable and faster than a normal for loop. You can read more about it here: https://www.pythonforbeginners.com/basics/list-comprehensions-in-python

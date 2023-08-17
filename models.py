@@ -60,10 +60,10 @@ class User(UserMixin, db.Model):
         linkedin_url="",
         website_url="",
     ):
-        hash = bcrypt.generate_password_hash(password).decode("utf8")
+        password_hash = bcrypt.generate_password_hash(password).decode("utf8")
         user = User(
             username=username,
-            password=hash,
+            password=password_hash,
             first_name=first_name,
             last_name=last_name,
             about_me=about_me,

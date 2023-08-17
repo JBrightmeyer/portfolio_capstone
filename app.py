@@ -28,17 +28,11 @@ from forms import (
 )
 from models import db, connect_db, User, Project, Comment, Job, Education, Skill
 from sqlalchemy import exc
-from urllib.parse import quote_plus
-
-password = "Mike@ig4real"
-encoded_password = quote_plus(password)
-
-uri = f"postgresql://postgres:{encoded_password}@localhost:5432/portfolio"
 
 app = Flask(__name__)
 
 app.app_context().push()
-app.config["SQLALCHEMY_DATABASE_URI"] = uri
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///portfolio"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "admin"
 

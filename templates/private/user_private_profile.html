@@ -77,7 +77,7 @@
     <hr>
     <ul class="list-group w-100 overflow-auto" style="max-height:65vh; ">
         {% for job in jobs %}
-        <li class="list-group-item border border-3 border-warning bg-dark text-light " >
+        <li class="list-group-item text-light " style="border:none; background-color: #343a40" >
             <div class="row">
                 <div class="col-md-auto">
                     <h4>{{job.title}}</h4>
@@ -115,7 +115,7 @@
     <hr>
     <ul class="list-group w-100 overflow-auto" style="max-height:40vh;">
         {% for degree in education %}
-            <li class="list-group-item border border-3 border-warning bg-dark text-light" >
+            <li class="list-group-item text-light" style="border:none; background-color: #343a40">
             <div class="row">
                 <div class="col md-auto">
                 <h4>{{degree.degree}}</h4>

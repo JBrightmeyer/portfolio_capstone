@@ -1,0 +1,10 @@
+.nav-link.active {
+    color:black;
+    background-color: white;
+}
+.content-container{
+    min-height:85vh;
+}
+.hidden{
+    display:none;
+}

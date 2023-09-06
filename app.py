@@ -49,7 +49,7 @@ def login():
         else: 
             error="Invalid Credentials"
             return render_template("login.html", form=form, error=error)
-    return render_template("login.html", form=form)
+    return render_template("/login.html", form=form)
 
 @app.route("/logout")
 @login_required 
@@ -97,7 +97,12 @@ def view_profile(userid):
     for skill in user.skills:
         skills_serial.append(Skill.serialize_skill(skill))
     skills_serial.sort(key=lambda x: x["description"])
-    return render_template("/public/user_public_profile.html", user = user_serial, jobs = jobs_serial, education=education_serial, skills=skills_serial)
+    projects = user.projects
+    serial_projects = []
+    for project in projects:
+        serial_projects.append(Project.serialize_project(project))
+    serial_projects.sort(key=lambda x: x["title"])
+    return render_template("/update/public_profile.html", user = user_serial, jobs = jobs_serial, education=education_serial, skills=skills_serial, projects = serial_projects)
 
 @app.route("/profiles/<int:userid>/edit")
 @login_required

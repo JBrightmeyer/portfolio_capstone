@@ -9,40 +9,38 @@
     <!-- <link rel="stylesheet" href="/static/base.css" > -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
-<body style="background-color: #343a40">
-  <div class="container mt-5" style="width:80vw;">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed rounded-3 border border-warning border-3">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            {% if current_user.is_authenticated == True %}
-            <li class="nav-item active ">
-              <a class="nav-link" href="/">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/portfolios/{{current_user.id}}/edit">Portfolio</a>
-            </li>
-            <li class="nav-item me-auto">
-              <a class="nav-link" href="/logout">Logout</a>
-            </li>
+<body >
+  <nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs p-0 " style="height:15vh; border:none; ">
+    <div class="container-fluid align-text-bottom" style="height:100%; background-color:#BAB2B5 ">
+      <button  class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="margin-left:15vw;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse align-bottom" id="navbarSupportedContent" style="height:100%;">
+        <ul class="nav mt-auto " style="margin-left:15vw;" >
+          <li class="nav-item" role="presentation" style="border:none;">
+            <button  class="nav-link text-dark active"  type="button"  style="border:none;">Home</button>
+          </li>
+          <li class="nav-item" role="presentation"style="border:none;">
+            {% if current_user %}
+            <button  class="nav-link text-dark" type="button" style="border:none;">Login/Register</button>
             {% else %}
-            <li class="nav-item me-auto">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
+            <button  class="nav-link text-dark" type="button" style="border:none;">Logout</button>
             {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" href="/comments/add">Submit Feedback</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
+  <div class="row" id="content-container" style="max-width:100%;">
+    <nav id = "profile-nav" class="col p-0" style="max-width:15vw; height:83vh; background-color:#123C69">
+        <ul  id = "profile-scroll-bar" class="nav flex-column text-center" style="background-color:#123C69">
+        </ul>
+    </nav>
       <!-- <div class="container mt-5 mb-5 m-auto pt-1  rounded" style="background-color:white; position:relative;"> -->
-
+    
     {% block content %}
     {% endblock %}
+    </div>
 <!-- </div> -->
 <script src="/static/profile.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

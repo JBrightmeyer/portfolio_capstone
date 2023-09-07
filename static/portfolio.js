@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function(){
         projects.data.forEach(project => {
         
             axios.get(`https://api.github.com/repos/${project["owner_name"]}/${project["project_name"]}/readme`, {headers:{"accept":"application/vnd.github.html+json"}}).then((data) =>{
-                console.log(data.data)
                 document.getElementById(`${project["id"]}-readme`).innerHTML = `<div class="col">${(data.data)}</div>`}).then((data) => {
                     
             axios.get(`https://api.github.com/repos/${project["owner_name"]}/${project["project_name"]}/languages`).then((data) =>{

@@ -29,9 +29,11 @@ def home():
     """If user is logged in, renders their homepage.  
     If not then redirects them to login page
     """
+    login_Form = LoginForm()
+    register_Form = UserCreateForm()
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for("edit_profile", userid=current_user.id))
-    return redirect(url_for("login"))
+    return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -39,17 +41,18 @@ def login():
         GET: Renders login form
     """
     error = None
-    form = LoginForm()
-    if form.validate_on_submit and request.method == "POST":
-        user = User.authenticate(form.username.data, form.password.data)
+    login_Form = LoginForm()
+    register_Form = UserCreateForm()
+    if login_Form.validate_on_submit and request.method == "POST":
+        user = User.authenticate(login_Form.username.data, login_Form.password.data)
         if user:
             login_user(user)
             flash("Logged in successfully")
             return redirect(url_for("home"))
         else: 
             error="Invalid Credentials"
-            return render_template("login.html", form=form, error=error)
-    return render_template("/login.html", form=form)
+            return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form, error=error)
+    return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form)
 
 @app.route("/logout")
 @login_required 
@@ -57,7 +60,7 @@ def logout():
     """Logs the current user out
     """
     logout_user()
-    return redirect(url_for("login"))
+    return redirect(url_for("home"))
 
 #######################################################################
 #Comment Routes
@@ -125,34 +128,35 @@ def edit_profile(userid):
         skills_serial.append(Skill.serialize_skill(skill))
     skills_serial.sort(key=lambda x: x["description"])
     education_serial.sort(key=lambda x: x["graduation_date"], reverse=True)
-    return render_template("/private/user_private_profile.html", user=user_serial, jobs=jobs_serial, education=education_serial, skills=skills_serial)
+    return render_template("/update/profile/private_profile.html", user=user_serial, jobs=jobs_serial, education=education_serial, skills=skills_serial)
 
 #######################################################################
 #User Routes
 
-@app.route("/users/add", methods=["GET", "POST"])
+@app.route("/users/add", methods=["POST"])
 def add_user():
     """POST: Validates the form, registers the user and logs them in
         GET: Renders UserCreateForm
     """
-    form = UserCreateForm()
+    login_Form = LoginForm()
+    register_Form = UserCreateForm()
     error=None
-    if form.validate_on_submit():
+    if register_Form.validate_on_submit():
         try:
-            user = User.register(form.first_name.data,
-                                form.last_name.data,
-                                form.username.data,
-                                form.password.data,
-                                form.about_me.data,
-                                form.github_url.data,
-                                form.linkedin_url.data,
-                                form.website_url.data)
+            user = User.register(register_Form.first_name.data,
+                                register_Form.last_name.data,
+                                register_Form.username.data,
+                                register_Form.password.data,
+                                register_Form.about_me.data,
+                                register_Form.github_url.data,
+                                register_Form.linkedin_url.data,
+                                register_Form.website_url.data)
             login_user(user)
         except exc.IntegrityError as e:
             db.session.rollback()
             print(e)
             error = "That username already exists"
-            return render_template("/add/add_user.html", form=form, error=error)
+            return redirect(url_for("home", login_Form=login_Form, register_Form=register_Form, error=error))
         return redirect(url_for("edit_profile", userid = user.id))
     return render_template("/add/add_user.html", form=form)
 

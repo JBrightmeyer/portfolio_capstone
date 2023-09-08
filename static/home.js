@@ -7,7 +7,7 @@ login_Form.addEventListener("submit", async function(event){
     try {
         const response = await axios.post("/api/login", formData);
         if (response.status === 200){
-            window.location.href=`http://127.0.0.1:5000/profiles/${response.data.user}/edit`
+            window.location.href=`http://127.0.0.1:5000/private/${response.data.user}`
         }
     } catch (error) {
         console.log(error)
@@ -22,7 +22,7 @@ register_Form.addEventListener("submit", async function(event){
     try{
         const response = await axios.post("/api/register", formData);
         if (response.status === 200){
-            window.location.href=`http://127.0.0.1:5000/profiles/${response.data.user}/edit`
+            window.location.href=`http://127.0.0.1:5000/private/${response.data.user}`
         }
     } catch(error) {
         console.log(error)

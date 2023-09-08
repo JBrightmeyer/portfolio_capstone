@@ -35,25 +35,6 @@ def home():
         return redirect(url_for("edit_profile", userid=current_user.id))
     return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form)
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    """POST: Determines if login information is valid, if so logs the user in
-        GET: Renders login form
-    """
-    error = None
-    login_Form = LoginForm()
-    register_Form = UserCreateForm()
-    if login_Form.validate_on_submit and request.method == "POST":
-        user = User.authenticate(login_Form.username.data, login_Form.password.data)
-        if user:
-            login_user(user)
-            flash("Logged in successfully")
-            return redirect(url_for("home"))
-        else: 
-            error="Invalid Credentials"
-            return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form, error=error)
-    return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form)
-
 @app.route("/logout")
 @login_required 
 def logout():
@@ -82,7 +63,7 @@ def add_comment():
 #######################################################################
 #Profile Routes
 
-@app.route("/profiles/<int:userid>/view")
+@app.route("/public/<int:userid>")
 def view_profile(userid):
     """Renders public view of a user, This does not include editing capabilities
     Args:
@@ -90,83 +71,40 @@ def view_profile(userid):
     """
     user = User.query.get(userid)
     user_serial = User.serialize_user(user)
-    jobs_serial = []
-    for job in user.jobs:
-        jobs_serial.append(Job.serialize_job(job))
-    education_serial = [] 
-    for school in user.education:
-        education_serial.append(Education.serialize_education(school))
-    skills_serial = []
-    for skill in user.skills:
-        skills_serial.append(Skill.serialize_skill(skill))
-    skills_serial.sort(key=lambda x: x["description"])
-    projects = user.projects
-    serial_projects = []
-    for project in projects:
-        serial_projects.append(Project.serialize_project(project))
+    
+    jobs_serial = [Job.serialize_job(job) for job in user.jobs]
+    jobs_serial.sort(key=lambda x: x["end_date"], reverse=True)
+    
+    education_serial = [Education.serialize_education(school) for school in user.education]
+    education_serial.sort(key=lambda x: x["graduation_date"], reverse=True)
+    
+    serial_projects = [Project.serialize_project(project) for project in user.projects]
     serial_projects.sort(key=lambda x: x["title"])
-    return render_template("/update/profile/public_profile.html", user = user_serial, jobs = jobs_serial, education=education_serial, skills=skills_serial, projects = serial_projects)
+    return render_template("/update/profile/public_profile.html", user = user_serial, jobs = jobs_serial, education=education_serial, projects = serial_projects)
 
-@app.route("/profiles/<int:userid>/edit")
+@app.route("/private/<int:userid>")
 @login_required
 def edit_profile(userid):
     """Renders private view of a user, This includes editing capabilities
     Args:
         userid (int): id of user being queried
     """
-    print("************************************************************************")
-    print(request.environ.get("HTTP_REFERER"))
-    print("*************************************************************************")
     user = User.query.get(userid)
     user_serial = User.serialize_user(user)
-    jobs_serial = []
-    for job in user.jobs:
-        jobs_serial.append(Job.serialize_job(job))
+    
+    jobs_serial = [Job.serialize_job(job) for job in user.jobs]
     jobs_serial.sort(key=lambda x: x["end_date"], reverse=True)
-    education_serial = [] 
-    for school in user.education:
-        education_serial.append(Education.serialize_education(school))
-    skills_serial = []
-    for skill in user.skills:
-        skills_serial.append(Skill.serialize_skill(skill))
-    skills_serial.sort(key=lambda x: x["description"])
+    
+    education_serial = [Education.serialize_education(school) for school in user.education] 
     education_serial.sort(key=lambda x: x["graduation_date"], reverse=True)
-    projects = user.projects
-    serial_projects = []
-    for project in projects:
-        serial_projects.append(Project.serialize_project(project))
+    
+    serial_projects = [Project.serialize_project(project) for project in user.projects]
     serial_projects.sort(key=lambda x: x["title"])
-    return render_template("/update/profile/private_profile.html", user=user_serial, jobs=jobs_serial, education=education_serial, skills=skills_serial, projects = serial_projects)
+    
+    return render_template("/update/profile/private_profile.html", user=user_serial, jobs=jobs_serial, education=education_serial, projects = serial_projects)
 
 #######################################################################
 #User Routes
-
-@app.route("/users/add", methods=["POST"])
-def add_user():
-    """POST: Validates the form, registers the user and logs them in
-        GET: Renders UserCreateForm
-    """
-    login_Form = LoginForm()
-    register_Form = UserCreateForm()
-    error=None
-    if register_Form.validate_on_submit():
-        try:
-            user = User.register(register_Form.first_name.data,
-                                register_Form.last_name.data,
-                                register_Form.username.data,
-                                register_Form.password.data,
-                                register_Form.about_me.data,
-                                register_Form.github_url.data,
-                                register_Form.linkedin_url.data,
-                                register_Form.website_url.data)
-            login_user(user)
-        except exc.IntegrityError as e:
-            db.session.rollback()
-            print(e)
-            error = "That username already exists"
-            return redirect(url_for("home", login_Form=login_Form, register_Form=register_Form, error=error))
-        return redirect(url_for("edit_profile", userid = user.id))
-    return render_template("/add/add_user.html", form=form)
 
 @app.route("/users/<int:userid>/edit", methods=["GET", "POST"])
 @login_required 
@@ -397,91 +335,6 @@ def delete_project(userid, projectid):
     flash("Project has been deleted")
     return redirect(url_for("home"))
 
-
-
-#######################################################################
-#User Skill Routes
-
-@app.route("/users/<int:userid>/skills/add", methods=["GET", "POST"])
-@login_required 
-def add_user_skill(userid):
-    """POST: Validates the form, adds skill to current user
-        GET: Renders SkillForm
-    Args:
-        userid (int): id of user being queried
-    """
-    form = SkillForm()
-    if form.validate_on_submit():
-        skill = Skill(description=form.description.data, user=userid)
-        db.session.add(skill)
-        db.session.commit()
-        return redirect(url_for("edit_profile", userid=userid))
-    return render_template("/add/add_skill.html", form=form)
-
-@app.route("/users/<int:userid>/skills/<int:skillid>/edit", methods=["GET", "POST"])
-@login_required 
-def edit_user_skill(userid, skillid):
-    """POST: Validates the form, edits the skill based on form changes
-        GET: Renders SkillForm with fields populated with current skill data
-    Args:
-        userid (int): id of user being queried
-        skillid (int): id of skill being queried
-    """
-    skill = Skill.query.get(skillid) 
-    form = SkillForm(obj=skill)
-    if form.validate_on_submit():
-        skill.description = form.description.data 
-        db.session.commit()
-        return redirect(url_for("edit_profile", userid=userid))
-    return render_template("/edit/edit_skill.html", form=form, skill=skill, user=userid)
-
-@app.route("/users/<int:userid>/skills/<int:skillid>/delete", methods=["POST"])
-@login_required 
-def delete_skill(userid, skillid):
-    """POST: Deletes Skill
-    Args:
-        skillid (int): id of skill being queried
-        userid (int): id of user being queried
-    """
-    skill = Skill.query.get(skillid)
-    db.session.delete(skill)
-    db.session.commit()
-    flash("Skill has been deleted")
-    return redirect(url_for("home"))
-
-###############################################################################
-#Portfolio Routes
-
-@app.route("/portfolios/<int:userid>/view")
-def get_portfolio(userid):
-    """Renders public portfolio view of a user, This does not include editing capabilities
-    Args:
-        userid (int): id of user being queried
-    """
-    user = User.query.get(userid)
-    projects = user.projects
-    serial_projects = []
-    for project in projects:
-        serial_projects.append(Project.serialize_project(project))
-    serial_projects.sort(key=lambda x: x["title"])
-    return render_template("/public/user_public_portfolio.html", user=user, projects = serial_projects)
-
-@app.route("/portfolios/<int:userid>/edit")
-@login_required
-def edit_portfolio(userid):
-    """Renders private portfolio view of a user, This includes editing capabilities
-    Args:
-        userid (int): id of user being queried
-    """
-    user = User.query.get(userid)
-    projects = user.projects
-    serial_projects = []
-    for project in projects:
-        serial_projects.append(Project.serialize_project(project))
-    serial_projects.sort(key=lambda x: x["title"])
-    return render_template("/private/user_private_portfolio.html", user=user, projects = serial_projects)
-
-
 ###############################################################################
 #API
     
@@ -496,9 +349,7 @@ def get_projects(userid):
         list: list of dictionaries representing serialized projects associated with a user
     """
     projects = Project.query.filter_by(user_id=userid)
-    serial_projects = []
-    for project in projects:
-        serial_projects.append(Project.serialize_project(project))
+    serial_projects = [Project.serialize_project(project) for project in projects]
     return jsonify(serial_projects)
 
 @app.route("/api/login", methods=["POST"])

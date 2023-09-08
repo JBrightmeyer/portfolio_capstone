@@ -52,17 +52,17 @@ function constructEditEducationForm(degreeId) {
 
 
 
-const profile_button = document.getElementById("profile-tab")
+// const profile_button = document.getElementById("profile-tab")
 
-profile_button.addEventListener("click", function(event){
-    axios.get("http://127.0.0.1:5000/users/1/projects/add").then((data) => {
-        console.log(data)
-        document.getElementById("form-content").innerHTML = data.data
-        document.getElementById("cancel-button").addEventListener("click", function(event){
-            $("#tab-content").addClass("slideMiddleFromLeft")
-            $("#tab-content").removeClass("slideLeftFromMiddle")
-            $("#form-content").addClass("slideRightFromMiddle")
-            $("#form-content").removeClass("slideMiddleFromRight")
-        })
-})
-})
+// profile_button.addEventListener("click", function(event){
+//     axios.get("http://127.0.0.1:5000/users/1/projects/add").then((data) => {
+//         console.log(data)
+//         document.getElementById("form-content").innerHTML = data.data
+//         document.getElementById("cancel-button").addEventListener("click", function(event){
+//             $("#tab-content").addClass("slideMiddleFromLeft")
+//             $("#tab-content").removeClass("slideLeftFromMiddle")
+//             $("#form-content").addClass("slideRightFromMiddle")
+//             $("#form-content").removeClass("slideMiddleFromRight")
+//         })
+// })
+// })

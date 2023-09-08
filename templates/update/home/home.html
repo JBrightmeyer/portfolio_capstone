@@ -30,7 +30,7 @@
     </div>
     <div  style="height:100%; overflow-y:scroll" class="tab-pane fade" id="register-container" role="tabpanel" aria-labelledby="register-tab" tabindex="0">
         <div class="col d-flex align-items-center" style="min-height:75vh;">
-            <form id="register-form" class = "w-75 p-3 m-auto" action="/users/add" method="POST">
+            <form id="register-form" class = "w-75 p-3 m-auto" action="/api/register" method="POST">
                 <h5 class="text-center">Register</h5>
                 <div class="form-group ">
                     {{ register_Form.hidden_tag() }}
@@ -49,4 +49,6 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<script src="/static/home.js"></script>
 {% endblock %}

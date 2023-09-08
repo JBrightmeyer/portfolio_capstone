@@ -8,3 +8,60 @@
 .hidden{
     display:none;
 }
+
+.slideLeftFromMiddle{
+    z-index:-10;
+    position: absolute;
+    animation: slideLeftFromMiddle 0.3s linear forwards; /* Define the sliding animation */
+}
+
+@keyframes slideLeftFromMiddle {
+    0% {
+        left:15vw;
+    }
+    100% {
+        left:-100%;
+        display:none;
+    }
+}
+.slideMiddleFromRight{
+    z-index:-10;
+    position:absolute;
+    animation: slideMiddleFromRight 0.3s linear forwards
+}
+@keyframes slideMiddleFromRight {
+    0%{
+        left:100%;
+        display:none;
+    }
+    100%{
+        left:15vw;
+    }
+    
+}
+.slideMiddleFromLeft{
+    z-index:-10;
+    position:absolute;
+    animation: slideMiddleFromLeft 0.3s linear forwards
+}
+@keyframes slideMiddleFromLeft {
+    0%{
+        left:-100%
+    }
+    100%{
+        left:15vw;
+    }
+}
+.slideRightFromMiddle{
+    z-index:-10;
+    position:absolute;
+    animation: slideRightFromMiddle 0.3s linear forwards
+}
+@keyframes slideRightFromMiddle {
+    0%{
+        left:15vw;
+    }
+    100%{
+        left:100%;
+    }
+}

@@ -26,8 +26,8 @@
       </div>
     </div>
   </nav>
-<div class="row p-0 m-0" id="content-container" style="max-width:100vw">
-    <nav id = "profile-nav" class="col p-0" style="max-width:15vw; height:85vh; background-color:#123C69">
+<div class="row p-0 m-0" id="content-container" style="max-width:100vw; ">
+    <nav id = "profile-nav" class="col p-0" style="max-width:15vw; height:85vh; background-color:#123C69; position:relative;">
         <ul  id = "profile-scroll-bar" class="nav flex-column text-center" style="background-color:#123C69">
             <li class="nav-item">
                 <a class="nav-link" href="#summary">Summary</a>
@@ -49,15 +49,15 @@
             {% endfor %}
         </ul>
     </nav>
-        <div   id = "tab-content" class="tab-content col m-0 p-0" style="max-height:85vh; box-sizing:border-box">
-            <div  class="tab-pane fade p-0 m-0 show active" id="profile-container" role="tabpanel" aria-labelledby="profile-tab" tabindex="0" style="height:100%; overflow-y:scroll; overflow-x:hidden;">
+        <div   id = "tab-content" class="tab-content col m-0 p-0" style="max-height:85vh; box-sizing:border-box; overflow-x:hidden;">
+            <div  class="tab-pane fade p-0 m-0 show active" id="profile-container" role="tabpanel" aria-labelledby="profile-tab" tabindex="0" style="height:100%; overflow-y:scroll; overflow-x:hidden;  max-width:85vw;">
               <div >
                 <div class="row">
                     <div class="col text-left">
                         <img src="{{user.profile_picture_url}}" style="width:20vh;height:20vh;">
                     </div>
                     <div class="col text-center " style="height:20vh;">
-                        <h1>{{user.first_name}} {{user.last_name}}</h1>
+                        <h1>{{user.first_name}} {{user.last_name}}  <button class="badge badge-info" id="edit-user-modal-button" onClick='constructEditUserForm("{{user.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal">Edit</button></h1>
                         <p><a href="{{user.github_url}}">GitHub</a> - <a href="{{user.linkedin_url}}">LinkedIn</a> - <a href="{{user.website_url}}">Website</a></p>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
         <li class="list-group-item " >
           <div class="row">
             <div class="col">
-              <p><b>{{job.title}} - {{job.company}}</b></p>
+              <p><b>{{job.title}} - {{job.company}}  <button class="badge badge-info" id="edit-job-modal-button" onClick='constructEditJobForm("{{job.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal">Edit</button></b></p>
             </div>
             <div class="col">
               <p>{{job.start_date}} - {{ job.end_date if job.current == false else "Present" }} </p>
@@ -85,27 +85,37 @@
             </div>
         </li>
         {% endfor %}
+        <div class="row text-center d-flex align-items center m-auto mt-3" style="width:95%">
+          <button class="col p-3 m-0 btn btn-info border border-3" id="add-job-modal-button" onClick=constructAddJobForm() data-bs-toggle="modal" data-bs-target="#form-modal" style="width:90%; height:15vh;">
+            Add a Job
+          </button>
+      </div>
               </div>
               <div id = "education" class="content-container">
               <h2 >Education</h2>
               <hr>
               {% for degree in education %}
               <div>
-                <p>{{degree.institution}} - {{degree.degree}}</p>
+                <p>{{degree.institution}} - {{degree.degree}} <button class="badge badge-info" id="edit-education-modal-button" onClick='constructEditEducationForm("{{degree.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal">Edit</button></p>
               </div>
               <div>
                 <p>{{degree.start_date}} - {{degree.graduation_date if degree.graduated == "True" else degree.graduation_date }} (projected)</p>
               </div>
         {% endfor %}
+        <div class="row text-center d-flex align-items center m-auto mt-3" style="width:95%">
+          <button class="col p-3 m-0 btn btn-info border border-3" id="add-education-modal-button" onClick=constructAddEducationForm() data-bs-toggle="modal" data-bs-target="#form-modal" style="width:90%; height:15vh;">
+            Add a Degree
+          </button>
+      </div>
               </div>
             </div> 
-    <div  style="height:100%; overflow-y:scroll" class="tab-pane fade" id="portfolio-container" role="tabpanel" aria-labelledby="portfolio-tab" tabindex="0">
+    <div  style="height:100%; overflow-y:scroll;" class="tab-pane fade" id="portfolio-container" role="tabpanel" aria-labelledby="portfolio-tab" tabindex="0">
       {% for project in projects %}
     <div id="project-{{project.id}}">
       <div class="row p-3 m-1" id="composition-graph">
         <div class="col-8 m-1 p-0"  style="min-height:23vh; position:relative;">
           <div class="row" >
-              <h3>{{project.title}}</h3>
+              <h3>{{project.title}}  <button class="badge badge-info" id="edit-project-modal-button" onClick='constructEditProjectForm("{{project.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal">Edit</button></h3>
           </div>
           <div class="row overflow-auto mb-3 px-3" id="{{project.id}}decription" style="height:13vh">
             {{project.description}}
@@ -144,13 +154,31 @@
       <img class = "rounded" src="https://img.freepik.com/free-icon/graph_318-10306.jpg" style="width:100%; height:100%;">
     </div>
         </div>
+        </div>
         {% endfor %}
+        <div class="row text-center d-flex align-items center m-auto mt-3" style="width:95%">
+            <button class="col p-3 m-0 btn btn-info border border-3" id="add-project-modal-button" onClick=constructAddProjectForm() data-bs-toggle="modal" data-bs-target="#form-modal" style="width:90%; height:15vh;">
+              Add a Project
+            </button>
         </div>
       </div>
+      <div class="modal fade text-center" id="form-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="form-modal-label" aria-hidden="true" style="max-height:100%;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width:65vw; max-height:75vh;">
+        <div class="modal-content m-auto"style="width:65vw;" >
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="form-modal-label">Test</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="form-modal-content">
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/static/view.js"></script>
 <script src="/static/portfolio.js"></script>
+<script src="/static/form-control.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.1/dist/chart.umd.min.js"></script>
 {% endblock %}

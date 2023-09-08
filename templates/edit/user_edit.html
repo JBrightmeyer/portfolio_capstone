@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+
 
 
 {% block content %}
@@ -6,7 +6,7 @@
     <div class=" alert alert-danger">{{ error }}</div>
 {% endif %}
 <div class="d-flex align-items-center mt-5" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/{{current_user.id}}/edit" method="POST" id="edit-user">
+    <form class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/edit" method="POST" id="edit-user">
         <h5 class="text-center">Edit User</h5>
         <div class="form-group ">
             {{ form.hidden_tag() }}

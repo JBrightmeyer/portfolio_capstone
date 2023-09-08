@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, session, request, redirect, url_for, flash, jsonify, make_response
 from flask_login import current_user,logout_user, LoginManager, login_required, login_user, login_url
 from forms import LoginForm, JobForm, UserForm, EducationForm, CommentForm, UserCreateForm, SkillForm, ProjectForm
 from models import db, connect_db, User, Project, Comment, Job, Education, Skill
@@ -105,7 +105,7 @@ def view_profile(userid):
     for project in projects:
         serial_projects.append(Project.serialize_project(project))
     serial_projects.sort(key=lambda x: x["title"])
-    return render_template("/update/public_profile.html", user = user_serial, jobs = jobs_serial, education=education_serial, skills=skills_serial, projects = serial_projects)
+    return render_template("/update/profile/public_profile.html", user = user_serial, jobs = jobs_serial, education=education_serial, skills=skills_serial, projects = serial_projects)
 
 @app.route("/profiles/<int:userid>/edit")
 @login_required
@@ -114,6 +114,9 @@ def edit_profile(userid):
     Args:
         userid (int): id of user being queried
     """
+    print("************************************************************************")
+    print(request.environ.get("HTTP_REFERER"))
+    print("*************************************************************************")
     user = User.query.get(userid)
     user_serial = User.serialize_user(user)
     jobs_serial = []
@@ -128,7 +131,12 @@ def edit_profile(userid):
         skills_serial.append(Skill.serialize_skill(skill))
     skills_serial.sort(key=lambda x: x["description"])
     education_serial.sort(key=lambda x: x["graduation_date"], reverse=True)
-    return render_template("/update/profile/private_profile.html", user=user_serial, jobs=jobs_serial, education=education_serial, skills=skills_serial)
+    projects = user.projects
+    serial_projects = []
+    for project in projects:
+        serial_projects.append(Project.serialize_project(project))
+    serial_projects.sort(key=lambda x: x["title"])
+    return render_template("/update/profile/private_profile.html", user=user_serial, jobs=jobs_serial, education=education_serial, skills=skills_serial, projects = serial_projects)
 
 #######################################################################
 #User Routes
@@ -348,7 +356,7 @@ def add_user_project(userid):
                             user_id = userid)
         db.session.add(project)
         db.session.commit()
-        return redirect(url_for("edit_portfolio", userid=userid))
+        return redirect(url_for("edit_profile", userid=userid))
     return render_template("/add/add_project.html", form=form)
 
 @app.route("/users/<int:userid>/projects/<int:projectid>/edit", methods=["GET", "POST"])
@@ -493,3 +501,47 @@ def get_projects(userid):
         serial_projects.append(Project.serialize_project(project))
     return jsonify(serial_projects)
 
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    """POST: Determines if login information is valid, if so logs the user in
+        GET: Renders login form
+    """
+    error = None
+    login_Form = LoginForm()
+    register_Form = UserCreateForm()
+    if login_Form.validate_on_submit and request.method == "POST":
+        user = User.authenticate(login_Form.username.data, login_Form.password.data)
+        if user:
+            login_user(user)
+            return make_response(jsonify({"message":"logged in successfully", "user":user.id}), 200)
+        else: 
+            error="Invalid Credentials"
+            return make_response(jsonify({"message":"invalid credentials"}), 400)
+    return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form)
+
+@app.route("/api/register", methods=["POST"])
+def api_register():
+    """POST: Validates the form, registers the user and logs them in
+        GET: Renders UserCreateForm
+    """
+    login_Form = LoginForm()
+    register_Form = UserCreateForm()
+    error=None
+    if register_Form.validate_on_submit():
+        try:
+            user = User.register(register_Form.first_name.data,
+                                register_Form.last_name.data,
+                                register_Form.username.data,
+                                register_Form.password.data,
+                                register_Form.about_me.data,
+                                register_Form.github_url.data,
+                                register_Form.linkedin_url.data,
+                                register_Form.website_url.data)
+            login_user(user)
+            return make_response(jsonify({"message":"registered", "user":user.id}), 200)
+        except exc.IntegrityError as e:
+            db.session.rollback()
+            print(e)
+            error = "That username already exists"
+            return make_response(jsonify({"message":"error"}), 401)
+    return render_template("/update/home/home.html", login_Form=login_Form, register_Form=register_Form)

@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+
 
 
 {% block content %}
 <div class="d-flex align-items-center" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/{{current_user.id}}/education/add" method="POST">
+    <form class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/education/add" method="POST">
         <div class="form-group " id = "form-container">
             <h5 class="text-center">Add Education</h5>
             {{ form.hidden_tag() }}

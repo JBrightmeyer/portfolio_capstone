@@ -1,0 +1,205 @@
+{% extends "/update/profile/update_profile_base.html" %}
+
+{% block title %}
+<link rel = "stylesheet" href="/static/view.css">
+{% endblock %}
+
+{% block content %}
+<div hidden id="user" data-id="{{user.id}}"></div>
+<nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs p-0 " style="height:15vh; border:none; ">
+    <div class="container-fluid align-text-bottom" style="height:100%; background-color:#BAB2B5 ">
+      <button  class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="margin-left:15vw;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse align-bottom" id="navbarSupportedContent" style="height:100%;">
+        <ul class="nav nav-tabs mt-auto " id="myTab" style="margin-left:15vw;" >
+          <li class="nav-item" role="presentation" style="border:none;">
+            <button  class="nav-link text-dark active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-container" type="button" role="tab" aria-controls="profile-container" aria-selected="true" style="border:none;">Profile</button>
+          </li>
+          <li class="nav-item" role="presentation"style="border:none;">
+            <button  class="nav-link text-dark tab" id="portfolio-tab" data-bs-toggle="tab" data-bs-target="#portfolio-container" type="button" role="tab" aria-controls="portfolio-container" aria-selected="false" style="border:none;">Portfolio</button>
+          </li>
+          <li class="nav-item ml-auto"style="border:none;">
+            <a  class="nav-link text-dark btn" href="/logout" type="button" aria-selected="false" style="border:none;">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div class="row p-0 m-0" id="content-container" style="max-width:100vw; ">
+    <nav id = "profile-nav" class="col p-0" style="max-width:15vw; height:85vh; background-color:#123C69; position:relative;">
+        <ul  id = "profile-scroll-bar" class="nav flex-column text-center" style="background-color:#123C69">
+          <li class="nav-item">
+            <a class="nav-link" href="#user-info">Information</a>
+          </li>  
+          <li class="nav-item">
+            <a class="nav-link" href="#summary">About Me</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#experience">Experience</a>
+          </li>
+          <li  class="nav-item">
+            <a class="nav-link" href="#education" >Eduction</a>
+          </li>
+        </ul>
+    </nav>
+    <nav id = "portfolio-nav" class="col p-0 hidden" style="max-width:15vw; height:85vh; background-color:#123C69;">
+        <ul  id = "portfolio-scroll-bar" class="nav flex-column text-center" style="background-color:#123C69">
+            {% for project in projects %}
+            <li class="nav-item">
+                <a class="nav-link" href="#project-{{project.id}}">{{project.title}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+        <div   id = "tab-content" class="tab-content col mt-2 m-0 px-3" style="max-height:85vh; box-sizing:border-box; overflow-x:hidden; ">
+            <div  class="tab-pane fade px-3 m-0  show active" id="profile-container" role="tabpanel" aria-labelledby="profile-tab" tabindex="0" style="height:100%; overflow-y:scroll; overflow-x:hidden;  max-width:85vw;">
+              <div class="content-edit" id="edit-user-modal-button" onClick='constructEditUserForm("{{user.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal">
+                <div class="row" id="user-info" >
+                    <div class="col text-center d-flex flex-column justify-content-center" style="height:20vh;">
+                        <h1>{{user.first_name}} {{user.last_name}} </h1>
+                        <p>
+                          {% if user.github_url %}
+                          <a class="btn link-button" href="{{user.github_url}}">GitHub</a>
+                          {% endif %}
+                          {% if user.linkedin_url %}
+                          <a class="btn link-button" href="{{user.linkedin_url}}">LinkedIn</a>
+                          {% endif %}
+                          {% if user.website_url %}
+                          <a class="btn link-button"href="{{user.website_url}}">Website</a>
+                          {% endif %}
+                        </p>
+                    </div>
+                </div>
+              
+                <div id="summary" style="min-height:20vh;">
+                <h2>Summary</h2>
+                <hr>
+              <p>{{user.about_me}}</p>
+              </div>
+            </div>
+            <div id="experience">
+              <h2>Experience</h2>
+              <hr>
+              {% for job in jobs %}
+        <li class="list-group-item content-edit" id="edit-job-modal-button" onClick='constructEditJobForm("{{job.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal" >
+          <div class="row">
+            <div class="col">
+              <p><b>{{job.title}} - {{job.company}}</b></p>
+            </div>
+            <div class="col">
+              <p>{{job.start_date}} - {{ job.end_date if job.current == false else "Present" }} </p>
+            </div>
+            </div>
+            <div>
+              <p>{{job.description}}</p>
+            </div>
+        </li>
+        {% endfor %}
+        <div class="row text-center d-flex align-items center m-auto ">
+          <button class="col btn border border-3 add-button " id="add-job-modal-button" onClick=constructAddJobForm() data-bs-toggle="modal" data-bs-target="#form-modal" style="margin-bottom:5vh; height:5vh;">
+            Add a Job
+          </button>
+      </div>
+              </div>
+              <div id = "education" class="content-container ">
+              <h2 >Education</h2>
+              <hr>
+              {% for degree in education %}
+              <li class="list-group-item content-edit" id="edit-job-modal-button" onClick='constructEditEducationForm("{{degree.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal">
+          <div class="row">
+            <div class="col">
+              <p><b>{{degree.institution}} - {{degree.degree}} </b></p>
+            </div>
+            <div class="col">
+              <p>{{degree.start_date}} - {{ degree.graduation_date}} {{(Projected) if degree.graduated == true }} </p>
+            </div>
+            </div>
+            <div>
+              <p>{{degree.description}}</p>
+            </div>
+        </li>
+             
+        {% endfor %}
+        <div class="row text-center d-flex align-items center m-auto m-3" >
+          <button class="col btn border border-3 add-button" id="add-education-modal-button" onClick=constructAddEducationForm() data-bs-toggle="modal" data-bs-target="#form-modal" style=" height:5vh;">
+            Add a Degree
+          </button>
+        </div>
+              </div>
+            </div> 
+    <div  style="height:100%; overflow-y:scroll;" class="tab-pane fade" id="portfolio-container" role="tabpanel" aria-labelledby="portfolio-tab" tabindex="0">
+      {% for project in projects %}
+    <div id="project-{{project.id}}" class="content-edit" onClick='constructEditProjectForm("{{project.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal">
+      <div class="row p-3 m-1" id="composition-graph">
+        <div class="col-8 m-1 p-0"  style="min-height:23vh; position:relative;">
+          <div class="row" >
+              <h3>{{project.title}}</h3>
+          </div>
+          <div class="row overflow-auto mb-3 px-3" id="{{project.id}}decription" style="height:13vh">
+            {{project.description}}
+        </div>
+        <div class="row mt-2 text-center">
+          {% if project.github_url %}
+          <div class="col">
+              <a class="btn link-button" href="{{project.github_url}}">Github</a>
+          </div>
+          {% endif %}
+          {% if project.website_url %}
+          <div class="col">
+              <a class="btn link-button" href="{{project.website_url}}">Website</a>
+          </div>
+          {% endif %}
+          <div class="col">
+              <button type="button" class="btn link-button" data-bs-toggle="modal" data-bs-target="#{{project.id}}-modal">
+                  ReadMe
+              </button>
+              <div class="modal fade" id="{{project.id}}-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="height:40vh;">
+                  <div class="modal-dialog modal-dialog-scrollable">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">ReadMe for {{project.title}}</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body" id="{{project.id}}-readme">
+                      </div>
+                  </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="col text-center" id="chart-container">
+      <img class = "rounded" src="https://img.freepik.com/free-icon/graph_318-10306.jpg" style="max-height:23vh; max-width:23vh; margin:auto;">
+    </div>
+        </div>
+        </div>
+        {% endfor %}
+        <div class="row text-center d-flex align-items center m-auto m-1">
+            <button class="col m-0 btn border border-3 add-button" id="add-project-modal-button" onClick=constructAddProjectForm() data-bs-toggle="modal" data-bs-target="#form-modal" style=" height:5vh;">
+              Add a Project
+            </button>
+        </div>
+      </div>
+      <div class="modal fade text-center" id="form-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="form-modal-label" aria-hidden="true" style="max-height:100%;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width:65vw; max-height:75vh;">
+        <div class="modal-content m-auto"style="width:65vw;" >
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="form-modal-label">Test</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="form-modal-content">
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<button id="share-button" class="btn add-button" style="position:absolute; left:4%; bottom:10%; height:100px; width:100px; background-color:white; border-radius:50%;">Share!</button>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/view.js"></script>
+<script src="/static/profile.js"></script>
+<script src="/static/portfolio.js"></script>
+<script src="/static/form-control.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.1/dist/chart.umd.min.js"></script>
+{% endblock %}

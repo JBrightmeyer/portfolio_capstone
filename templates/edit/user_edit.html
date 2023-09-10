@@ -1,13 +1,12 @@
-{% extends "base.html" %}
+
 
 
 {% block content %}
 {% if error %}
     <div class=" alert alert-danger">{{ error }}</div>
 {% endif %}
-<div class="d-flex align-items-center mt-5" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/{{current_user.id}}/edit" method="POST" id="edit-user">
-        <h5 class="text-center">Edit User</h5>
+<div style="min-height:75vh;">
+    <form class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/edit" method="POST" id="edit-user">
         <div class="form-group ">
             {{ form.hidden_tag() }}
             
@@ -22,7 +21,7 @@
                {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-warning" form="edit-user">Edit User</button>
+        <button type="submit" class="btn link-button" form="edit-user">Edit User</button>
         <button type="submit" class="btn btn-danger" form="delete-user">Delete User</button>
     </form>
     <form action="/users/{{current_user.id}}/delete" method="POST" id="delete-user">

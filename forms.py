@@ -43,6 +43,7 @@ class EducationForm(FlaskForm):
     degree = StringField("Degree", validators=[InputRequired()])
     graduation_date = DateField("Graduated", validators=[InputRequired()])
     start_date = DateField("Start", validators=[InputRequired()])
+    description = TextAreaField("Description", validators=[InputRequired()])
     graduated = BooleanField("Graduated")
     
 class CommentForm(FlaskForm):

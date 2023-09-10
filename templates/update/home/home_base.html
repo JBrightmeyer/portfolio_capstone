@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel = "stylesheet" href="/static/view.css">
+    {% block title %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs p-0 " style="height:15vh; border:none; ">
+        <div class="container-fluid align-text-bottom" style="height:100%; background-color:#BAB2B5 ">
+          <button  class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="margin-left:15vw;">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse align-bottom" id="navbarSupportedContent" style="height:100%;">
+            <ul class="nav nav-tabs mt-auto " id="myTab" style="margin-left:15vw;" >
+              <li class="nav-item" role="presentation" style="border:none;">
+                <button  class="nav-link text-dark active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-container" type="button" role="tab" aria-controls="home-container" aria-selected="true" style="border:none;">Home</button>
+              </li>
+              <li class="nav-item" role="presentation"style="border:none;">
+                <button  class="nav-link text-dark tab" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-container" type="button" role="tab" aria-controls="login-container" aria-selected="false" style="border:none;">Login</button>
+              </li>
+              <li class="nav-item" role="presentation" style="border:none;">
+                <button  class="nav-link text-dark tab" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-container" type="button" role="tab" aria-controls="register-container" aria-selected="true" style="border:none;">Register</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="row p-0 m-0" id="content-container" style="max-width:100vw">
+        <nav id = "profile-nav" class="col p-0" style="max-width:15vw; height:85vh; background-color:#123C69">
+            <ul  id = "profile-scroll-bar" class="nav flex-column text-center" style="background-color:#123C69">
+              <li class="nav-item">
+                <a class="nav-link active" id="title-link">About This Website</a>
+            </li>
+            </ul>
+        </nav>
+      {% block content %}
+      {% endblock %}
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,12 +1,11 @@
-{% extends "base.html" %}
+
 
 
 {% block content %}
 
 
-<div class="d-flex align-items-center" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark text-light" action="/users/{{current_user.id}}/jobs/add" method="POST">
-        <h5 class="text-center">Add Job</h5>
+<div style="min-height:75vh;">
+    <form class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/jobs/add" method="POST">
         <div class="form-group " id = "form-container">
             {{ form.hidden_tag() }}
             {% for field in form if field.widget.input_type != "hidden" %}   
@@ -24,7 +23,8 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-warning">Submit</button>
+        <button type="submit" class="btn link-button">Submit</button>
+        <button id="cancel-button" type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
     </form>
 </div>
 <!-- scripts below -->

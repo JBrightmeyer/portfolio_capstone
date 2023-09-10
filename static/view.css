@@ -1,0 +1,38 @@
+.nav-link.active {
+    color:black;
+    background-color: white;
+}
+.content-container{
+    min-height:85vh;
+}
+.hidden{
+    display:none;
+}
+.nav-link:not(.active){
+    color:white;
+}
+
+.link-button{
+    background-color: #123C69 !important;
+    color: white !important;
+}
+.badge{
+    background-color: #123C69 !important;
+}
+.add-button:hover{
+    background-color:grey !important;
+    border-color: grey !important;
+    color:white !important;
+}
+.badge:hover{
+    opacity:75% !important;
+}
+.btn:hover{
+    opacity:75% !important;
+}
+.content-edit:hover{
+    background-color:lightgrey;
+    border-radius: 5px;
+    padding:5px;
+    cursor:pointer;
+}

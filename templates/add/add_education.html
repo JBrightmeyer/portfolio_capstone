@@ -2,10 +2,9 @@
 
 
 {% block content %}
-<div class="d-flex align-items-center" style="min-height:75vh;">
+<div  style="min-height:75vh;">
     <form class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/education/add" method="POST">
         <div class="form-group " id = "form-container">
-            <h5 class="text-center">Add Education</h5>
             {{ form.hidden_tag() }}
             {% for field in form if field.widget.input_type != "hidden" %}   
             <div class="form-group mb-2">
@@ -22,7 +21,8 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-warning">Submit</button>
+        <button type="submit" class="btn link-button">Submit</button>
+        <button id="cancel-button" type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
     </form>
 </div>
 <!-- scripts below -->

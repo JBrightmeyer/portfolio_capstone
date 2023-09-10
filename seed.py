@@ -6,7 +6,7 @@ db.drop_all()
 db.create_all()
 
 #registers test user
-user = User.register("Test","Test", "test", "test", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.")
+user = User.register("Test","Test", "test", "test", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.", "yes", "yes", "yes")
 
 #adds test job titles
 for i in range(3):
@@ -28,6 +28,7 @@ for i in range(2):
                        graduation_date = "7/5/2023",
                        start_date = "7/5/2020",
                        graduated = False,
+                       description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum ullam animi tenetur? Autem amet porro aspernatur molestiae facere voluptatibus, ex maxime delectus velit impedit, unde et animi ea quisquam! Sequi.",
                        user = user.id)
     db.session.add(degree)
     db.session.commit()

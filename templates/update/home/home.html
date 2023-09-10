@@ -5,8 +5,27 @@
 
 {% block content %}
 <div   id = "tab-content" class="tab-content col m-0 p-0" style="max-height:85vh; box-sizing:border-box">
-    <div  class="tab-pane fade p-0 m-0 show active" id="home-container" role="tabpanel" aria-labelledby="home-tab" tabindex="0" style="height:100%; overflow-y:scroll; overflow-x:hidden;">
-      This will be the homepage description
+    <div  class="tab-pane fade p-3 m-0 show active" id="home-container" role="tabpanel" aria-labelledby="home-tab" tabindex="0" style="height:100%; overflow-y:scroll; overflow-x:hidden;">
+        <div class="row text-center">
+            <h1 class="m-5">Portfolio Creation!</h1>
+        </div>
+        <div class="row mt-3">
+            <h3>Project Summary</h3>
+            <hr>
+            <p>
+                This application allows users to create profiles, add information (including job history, personal description, relevant links, github projects and education history) and share a public link to their portfolio to share.
+            </p>
+            <h3>Tech Information</h3>
+            <hr>
+            <p>
+                This website uses HTML/CSS/Javascript as the front end.  It utilized a combination of bootstrap, custom css and some extra libraries like Chart.js to display.  The back end is written in Python/Flask with SQLAlchemy and a PostgreSQL server for data persistance.  It uses Flask-Login for authentication and is hosted on Render.com
+            </p>
+            <h3>How to Use</h3>
+            <hr>
+            <p>
+                You can examine this website by loggin in the with the default account with username: Test and password: test.  This account is unable to be edited but the various menus and user paths are available up until the data is submitted.  This is to prevent undesired additions to the account.  You may also create your own account and edit as you please!
+            </p>
+        </div>
     </div>
     <div  style="height:100%; overflow-y:scroll" class="tab-pane fade" id="login-container" role="tabpanel" aria-labelledby="login-tab" tabindex="0">
         <div class="col d-flex align-items-center" style="min-height:75vh;">
@@ -24,7 +43,7 @@
                         {% endfor %}
                     {% endfor %}
                 </div>
-                <button form="login-form" type="submit" class="btn btn-warning">Login</button>
+                <button form="login-form" type="submit" class="btn link-button">Login</button>
             </form>
         </div>
     </div>
@@ -44,7 +63,7 @@
                         {% endfor %}
                     {% endfor %}
                 </div>
-                <button form ="register-form" type="submit" class="btn btn-warning">Register</button>
+                <button form ="register-form" type="submit" class="btn link-button">Register</button>
             </form>
         </div>
     </div>

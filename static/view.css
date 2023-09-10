@@ -8,60 +8,31 @@
 .hidden{
     display:none;
 }
-
-.slideLeftFromMiddle{
-    z-index:-10;
-    position: absolute;
-    animation: slideLeftFromMiddle 0.3s linear forwards; /* Define the sliding animation */
+.nav-link:not(.active){
+    color:white;
 }
 
-@keyframes slideLeftFromMiddle {
-    0% {
-        left:15vw;
-    }
-    100% {
-        left:-100%;
-        display:none;
-    }
+.link-button{
+    background-color: #123C69 !important;
+    color: white !important;
 }
-.slideMiddleFromRight{
-    z-index:-10;
-    position:absolute;
-    animation: slideMiddleFromRight 0.3s linear forwards
+.badge{
+    background-color: #123C69 !important;
 }
-@keyframes slideMiddleFromRight {
-    0%{
-        left:100%;
-        display:none;
-    }
-    100%{
-        left:15vw;
-    }
-    
+.add-button:hover{
+    background-color:grey !important;
+    border-color: grey !important;
+    color:white !important;
 }
-.slideMiddleFromLeft{
-    z-index:-10;
-    position:absolute;
-    animation: slideMiddleFromLeft 0.3s linear forwards
+.badge:hover{
+    opacity:75% !important;
 }
-@keyframes slideMiddleFromLeft {
-    0%{
-        left:-100%
-    }
-    100%{
-        left:15vw;
-    }
+.btn:hover{
+    opacity:75% !important;
 }
-.slideRightFromMiddle{
-    z-index:-10;
-    position:absolute;
-    animation: slideRightFromMiddle 0.3s linear forwards
-}
-@keyframes slideRightFromMiddle {
-    0%{
-        left:15vw;
-    }
-    100%{
-        left:100%;
-    }
+.content-edit:hover{
+    background-color:lightgrey;
+    border-radius: 5px;
+    padding:5px;
+    cursor:pointer;
 }

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
     document.getElementById("share-button").addEventListener("click", function(){
         
-        let text = `http://127.0.0.1:5000/profiles/${document.getElementById("user-profile-container").getAttribute("data-id")}/view`
+        let text = `http://127.0.0.1:5000/public/${document.getElementById("user").getAttribute("data-id")}`
         const copyContent = async () => {
         try {
         await navigator.clipboard.writeText(text);

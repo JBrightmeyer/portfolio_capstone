@@ -1,9 +1,7 @@
 const login_Form = document.getElementById("login-form")
-
 login_Form.addEventListener("submit", async function(event){
     event.preventDefault()
     const formData = new FormData(login_Form);
-
     try {
         const response = await axios.post("/api/login", formData);
         if (response.status === 200){
@@ -15,7 +13,6 @@ login_Form.addEventListener("submit", async function(event){
 })
 
 const register_Form = document.getElementById("register-form")
-
 register_Form.addEventListener("submit", async function(event){
     event.preventDefault()
     const formData = new FormData(register_Form);
@@ -29,3 +26,17 @@ register_Form.addEventListener("submit", async function(event){
     }
 })
 
+const login_Tab = document.getElementById("login-tab")
+login_Tab.addEventListener("click", function(){
+    document.getElementById("title-link").innerHTML = "Login"
+})
+
+const home_Tab = document.getElementById("home-tab")
+home_Tab.addEventListener("click", function(){
+    document.getElementById("title-link").innerHTML = "About This Website"
+})
+
+const register_Tab = document.getElementById("register-tab")
+register_Tab.addEventListener("click", function(){
+    document.getElementById("title-link").innerHTML = "Register"
+})

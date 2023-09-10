@@ -128,6 +128,7 @@ class Education(db.Model):
     graduation_date = db.Column(db.Date)
     start_date = db.Column(db.Date)
     graduated = db.Column(db.Boolean)
+    description = db.Column(db.String)
     user = db.Column(db.ForeignKey("users.id"))
     
     @classmethod 
@@ -137,6 +138,7 @@ class Education(db.Model):
                 "degree":education.degree,
                 "graduation_date":education.graduation_date,
                 "start_date":education.start_date,
+                "description":education.description,
                 "graduated":education.graduated}
     
 class Skill(db.Model):

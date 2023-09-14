@@ -1,7 +1,8 @@
 
 const addProjectButton = document.getElementById("add-project-modal-button")
 function constructAddProjectForm() {
-    axios.get(`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/add`).then((data) => {
+    const constructProjectUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/add`
+    axios.get(constructProjectUrl).then((data) => {
         document.getElementById("form-modal-content").innerHTML = data.data
         document.getElementById("form-modal-label").innerHTML = "Add Project"
     })
@@ -9,67 +10,81 @@ function constructAddProjectForm() {
 
 const addJobButton = document.getElementById("add-job-modal-button")
 function constructAddJobForm() {
-    axios.get(`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/add`).then((data) => {
+    const constructJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/add`
+    axios.get(constructJobUrl).then((data) => {
         document.getElementById("form-modal-content").innerHTML = data.data
         document.getElementById("form-modal-label").innerHTML = "Add Job"
+        constructFormListener(constructJobUrl)
     })
 }
 
 const addEducationButton = document.getElementById("add-education-modal-button")
 function constructAddEducationForm() {
-    axios.get(`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/add`).then((data) => {
+    const constructEducationUrl =`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/add`
+    axios.get(constructEducationUrl).then((data) => {
         document.getElementById("form-modal-content").innerHTML = data.data
         document.getElementById("form-modal-label").innerHTML = "Add Education"
+        constructFormListener(constructEducationUrl)
     })
 }
 
 const editProjectButton = document.getElementById("edit-project-modal-button")
 function constructEditProjectForm(projectId) {
-    axios.get(`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/${projectId}/edit`).then((data) => {
+    const editProjectUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/${projectId}/edit`
+    axios.get(editProjectUrl).then((data) => {
         document.getElementById("form-modal-content").innerHTML = data.data
         document.getElementById("form-modal-label").innerHTML = "Edit Project"
+        constructFormListener(editProjectUrl)
     })
 }
 
 const editUserButton = document.getElementById("edit-user-modal-button")
 function constructEditUserForm(userId) {
-    axios.get(`http://127.0.0.1:5000/users/${userId}/edit`).then((data) => {
+    const editUserUrl = `http://127.0.0.1:5000/users/${userId}/edit`
+    axios.get(editUserUrl).then((data) => {
         document.getElementById("form-modal-content").innerHTML = data.data
         document.getElementById("form-modal-label").innerHTML = "Edit User"
+        constructFormListener(editUserUrl)
     })
 }
 
 const editJobButton = document.getElementById("edit-job-modal-button")
 function constructEditJobForm(jobId) {
-    axios.get(`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/${jobId}/edit`).then((data) => {
+    const editJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/${jobId}/edit`
+    axios.get(editJobUrl).then((data) => {
         document.getElementById("form-modal-content").innerHTML = data.data
         document.getElementById("form-modal-label").innerHTML = "Edit Job"
+        constructFormListener(editJobUrl)
     })
 }
 
 
 const editEducationButton = document.getElementById("edit-education-modal-button")
 function constructEditEducationForm(degreeId) {
-    axios.get(`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/${degreeId}/edit`).then((data) => {
+    const editDegreeUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/${degreeId}/edit`
+    axios.get(editDegreeUrl).then((data) => {
         document.getElementById("form-modal-content").innerHTML = data.data
         document.getElementById("form-modal-label").innerHTML = "Edit Education"
+        constructFormListener(editDegreeUrl)
     })
 }
 
 
 
 
-// const profile_button = document.getElementById("profile-tab")
-
-// profile_button.addEventListener("click", function(event){
-//     axios.get("http://127.0.0.1:5000/users/1/projects/add").then((data) => {
-//         console.log(data)
-//         document.getElementById("form-content").innerHTML = data.data
-//         document.getElementById("cancel-button").addEventListener("click", function(event){
-//             $("#tab-content").addClass("slideMiddleFromLeft")
-//             $("#tab-content").removeClass("slideLeftFromMiddle")
-//             $("#form-content").addClass("slideRightFromMiddle")
-//             $("#form-content").removeClass("slideMiddleFromRight")
-//         })
-// })
-// })
+function constructFormListener(url){
+    document.getElementById("form").addEventListener("submit", function(e){
+        e.preventDefault()
+        const form = document.getElementById("form")
+        const formData = new FormData(form)
+        const formDataObject = {}
+        formData.forEach((value,key) => {
+            formDataObject[key] = value;
+        })
+        axios.post(url, formDataObject).then((data) =>{
+            location.reload()
+        }).catch((error) => {
+            document.getElementById("form-modal-content").innerHTML = error.response.data
+        })
+    })
+}

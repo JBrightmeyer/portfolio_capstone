@@ -3,7 +3,7 @@
 
 {% block content %}
 <div style="min-height:75vh;">
-    <form class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/jobs/{{job.id}}/edit" method="POST" id="edit-job">
+    <form id = "form" class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/jobs/{{job.id}}/edit" method="POST">
         <div class="form-group " id = "form-container">
             {{ form.hidden_tag() }}
             {% for field in form if field.widget.input_type != "hidden" %}   
@@ -21,10 +21,10 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn link-button" form="edit-job">Edit Job</button>
+        <button type="submit" class="btn link-button" form="form">Edit Job</button>
         <button type="submit" class="btn btn-danger" form="delete-job">Delete Job</button>
     </form>
-    <form action="/users/{{current_user.id}}/jobs/{{job.id}}/delete" method="POST" id="delete-job">
+    <form action="/users/{{current_user.id}}/jobs/{{job.id}}" method="POST" id="delete-job">
     </form>
 </div>
 <!-- scripts below -->

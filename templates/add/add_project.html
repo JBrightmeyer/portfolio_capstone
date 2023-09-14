@@ -6,7 +6,7 @@
 {% endif %}
 
 <div class=" mt-2" style="min-height:75vh;">
-    <form id = "add-project-form" class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/projects/add" method="POST">
+    <form id = "form" class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/projects/add" method="POST">
         <div class="form-group " id = "form-container">
             {{ form.hidden_tag() }}
             {% for field in form if field.widget.input_type != "hidden" %} 

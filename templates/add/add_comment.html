@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="d-flex align-items-center text-light" style="min-height:75vh;">
-    <form class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark" action="/comments/add" method="POST">
+    <form id = "form" class = "w-50 p-3 m-auto border border-warning border-5 rounded-5 bg-dark" action="/comments/add" method="POST">
         <div class="form-group " id = "form-container">
             <h5 class="text-center">Submit Feedback</h5>
             {{ form.hidden_tag() }}

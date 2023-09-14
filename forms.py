@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm 
-from wtforms import IntegerField,FieldList, StringField, PasswordField, SelectField, BooleanField, SelectMultipleField, DateField, TextAreaField
+from wtforms import validators, IntegerField,FieldList, StringField, PasswordField, SelectField, BooleanField, SelectMultipleField, DateField, TextAreaField
 from wtforms.validators import URL, Optional, InputRequired, DataRequired 
 
 class LoginForm(FlaskForm):
@@ -8,13 +8,21 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password", validators=[InputRequired()])
     
 class JobForm(FlaskForm):
-    
+    def validate_date_range(form, field):
+        start_date = form.start_date.data
+        end_date = field.data
+
+        if end_date < start_date:
+            raise validators.ValidationError("End date must be greater than or equal to start date.")
+
     title = StringField("Title", validators=[InputRequired()])
     company = StringField("Company", validators=[InputRequired()])
     start_date = DateField("Start Date", validators=[InputRequired()])
-    end_date = DateField("End Date", validators=[InputRequired()])
+    end_date = DateField("End Date", validators=[InputRequired(), validate_date_range])
     current = BooleanField("Current")
     description = TextAreaField("Description")
+    
+  
     
 class UserForm(FlaskForm):
     

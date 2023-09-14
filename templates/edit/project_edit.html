@@ -6,7 +6,7 @@
     <div class=" alert alert-danger">{{ error }}</div>
 {% endif %}
 <div  style="min-height:75vh;">
-    <form class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/projects/{{project.id}}/edit" method="POST" id="edit-project">
+    <form id = "form" class = "w-75 p-3 m-auto" action="/users/{{current_user.id}}/projects/{{project.id}}/edit" method="POST">
         <div class="form-group " id = "form-container">
             {{ form.hidden_tag() }}
             {% for field in form if field.widget.input_type != "hidden" %}

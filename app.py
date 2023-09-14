@@ -4,6 +4,7 @@ from forms import LoginForm, JobForm, UserForm, EducationForm, CommentForm, User
 from models import db, connect_db, User, Project, Comment, Job, Education, Skill
 from sqlalchemy import exc
 
+
 app = Flask(__name__)
 
 app.app_context().push()
@@ -17,8 +18,6 @@ login_manager.login_view="login"
 connect_db(app)
 
 db.create_all()
-
-
 
 @login_manager.user_loader 
 def load_user(user_id):
@@ -108,7 +107,19 @@ def edit_profile(userid):
 
 @app.route("/users/<int:userid>/edit", methods=["GET", "POST"])
 @login_required 
-def edit_user(userid):
+def edit_user_get(userid):
+    """POST: Validates the form, edits the user based on form changes 
+        GET: Renders UserForm with fields populated with current user data
+    Args:
+        userid (int): id of user being queried
+    """
+    user = User.query.get(userid)
+    form = UserForm(obj=user)
+    return render_template("/edit/user_edit.html", form=form)
+
+@app.route("/users/<int:userid>/edit", methods=["POST"])
+@login_required 
+def edit_user_post(userid):
     """POST: Validates the form, edits the user based on form changes 
         GET: Renders UserForm with fields populated with current user data
     Args:
@@ -118,21 +129,16 @@ def edit_user(userid):
     form = UserForm(obj=user)
     error = None
     if form.validate_on_submit():
-        try:
-            user.username = form.username.data
-            user.first_name = form.first_name.data 
-            user.last_name = form.last_name.data 
-            user.about_me = form.about_me.data
-            user.github_url = form.github_url.data 
-            user.linkedin_url = form.linkedin_url.data 
-            user.website_url = form.website_url.data
-            db.session.commit()
-        except exc.IntegrityError as e:
-            db.session.rollback()
-            error = "That username already exists"
-            return render_template("/edit/user_edit.html", form=form, error=error)
-        return redirect(url_for("edit_profile", userid=userid))
-    return render_template("/edit/user_edit.html", form=form)
+        user.username = form.username.data
+        user.first_name = form.first_name.data 
+        user.last_name = form.last_name.data 
+        user.about_me = form.about_me.data
+        user.github_url = form.github_url.data 
+        user.linkedin_url = form.linkedin_url.data 
+        user.website_url = form.website_url.data
+        db.session.commit()
+        return make_response(redirect(url_for("home")), 201)
+    return make_response(render_template("/edit/user_edit.html", form=form), 400)
 
 @app.route("/users/<int:userid>/delete", methods=["POST"])
 @login_required 
@@ -145,17 +151,26 @@ def delete_user(userid):
     user = User.query.get(userid)
     db.session.delete(user)
     db.session.commit()
-    flash("User has been deleted")
     return redirect(url_for("home"))
 
 #######################################################################
 #User Job Routes
 
-@app.route("/users/<int:userid>/jobs/add", methods=["GET", "POST"])
+@app.route("/users/<int:userid>/jobs/add", methods=["GET"])
 @login_required
-def add_user_job(userid):
+def add_user_job_get(userid):
+    """GET: Renders JobForm
+    Args:
+        userid (int): id of user being queried
+    """
+    user = User.query.get(userid)
+    form = JobForm()
+    return render_template("/add/add_job.html", form=form)
+
+@app.route("/users/<int:userid>/jobs/add", methods=["POST"])
+@login_required
+def add_user_job_post(userid):
     """POST: Validates the form, adds job to current user
-        GET: Renders JobForm
     Args:
         userid (int): id of user being queried
     """
@@ -171,14 +186,26 @@ def add_user_job(userid):
                   description = form.description.data)
         db.session.add(job)
         db.session.commit()
-        return redirect(url_for("edit_profile", userid=userid))
-    return render_template("/add/add_job.html", form=form)
+        return make_response(redirect(url_for("home")), 201)
+    else:
+        return make_response(render_template("/add/add_job.html", form=form), 400)
 
-@app.route("/users/<int:userid>/jobs/<int:jobid>/edit", methods=["GET", "POST"])
+@app.route("/users/<int:userid>/jobs/<int:jobid>/edit", methods=["GET"])
 @login_required 
-def edit_user_job(userid, jobid):
+def edit_user_job_get(userid, jobid):
+    """GET: Renders JobForm with fields populated with current job data
+    Args:
+        userid (int): id of user being queried
+        jobid (int): id of job being queried
+    """
+    job = Job.query.get(jobid)
+    form = JobForm(obj=job)
+    return render_template("/edit/job_edit.html", job=job, form=form)
+
+@app.route("/users/<int:userid>/jobs/<int:jobid>/edit", methods=["POST"])
+@login_required 
+def edit_user_job_post(userid, jobid):
     """POST: Validates the form, edits the job based on form changes
-        GET: Renders JobForm with fields populated with current job data
     Args:
         userid (int): id of user being queried
         jobid (int): id of job being queried
@@ -193,13 +220,13 @@ def edit_user_job(userid, jobid):
         job.current = form.current.data 
         job.description = form.description.data 
         db.session.commit()
-        return redirect(url_for("edit_profile", userid=userid))
-    return render_template("/edit/job_edit.html", job=job, form=form)
+        return redirect(url_for("home"))
+    return make_response(render_template("/edit/job_edit.html", job=job, form=form), 400)
 
-@app.route("/users/<int:userid>/jobs/<int:jobid>/delete", methods=["POST"])
+@app.route("/users/<int:userid>/jobs/<int:jobid>", methods=["POST"])
 @login_required 
 def delete_job(userid, jobid):
-    """POST: Deletes Job
+    """DELETE: Deletes Job
     Args:
         jobid (int): id of job being queried
         userid (int): id of user being queried
@@ -207,16 +234,26 @@ def delete_job(userid, jobid):
     job = Job.query.get(jobid)
     db.session.delete(job)
     db.session.commit()
-    flash("Job has been deleted")
     return redirect(url_for("home"))
 
 
 #######################################################################
 #User Education Routes
 
-@app.route("/users/<int:userid>/education/add", methods=["GET", "POST"])
+@app.route("/users/<int:userid>/education/add", methods=["GET"])
 @login_required
-def add_user_education(userid):
+def add_user_education_get(userid):
+    """POST: Validates the form, adds education to current user
+        GET: Renders EducationForm
+    Args:
+        userid (int): id of user being queried
+    """
+    form = EducationForm()
+    return render_template("/add/add_education.html", form=form)
+
+@app.route("/users/<int:userid>/education/add", methods=["POST"])
+@login_required
+def add_user_education_post(userid):
     """POST: Validates the form, adds education to current user
         GET: Renders EducationForm
     Args:
@@ -232,12 +269,25 @@ def add_user_education(userid):
                               user = userid)
         db.session.add(education)
         db.session.commit()
-        return redirect(url_for("edit_profile", userid=userid))
-    return render_template("/add/add_education.html", form=form)
+        return make_response(redirect(url_for("home")), 201)
+    return make_response(render_template("/add/add_education.html", form=form), 400)
 
-@app.route("/users/<int:userid>/education/<int:eduid>/edit", methods=["GET", "POST"])
+@app.route("/users/<int:userid>/education/<int:eduid>/edit", methods=["GET"])
 @login_required
-def edit_user_education(userid, eduid):
+def edit_user_education_get(userid, eduid):
+    """POST: Validates the form, edits the education based on form changes
+        GET: Renders EducationForm with fields populated with current education data
+    Args:
+        userid (int): id of user being queried
+        eduid (int): id of education being queried
+    """
+    school = Education.query.get(eduid)
+    form = EducationForm(obj=school)
+    return render_template("/edit/education_edit.html", form=form, school=school)
+
+@app.route("/users/<int:userid>/education/<int:eduid>/edit", methods=["POST"])
+@login_required
+def edit_user_education_post(userid, eduid):
     """POST: Validates the form, edits the education based on form changes
         GET: Renders EducationForm with fields populated with current education data
     Args:
@@ -253,8 +303,8 @@ def edit_user_education(userid, eduid):
         school.start_date = form.start_date.data 
         school.graduated = form.graduated.data 
         db.session.commit() 
-        return redirect(url_for("edit_profile", userid=userid))
-    return render_template("/edit/education_edit.html", form=form, school=school)
+        return make_response(redirect(url_for("home")), 201)
+    return make_response(render_template("/edit/education_edit.html", form=form, school=school), 400)
 
 @app.route("/users/<int:userid>/education/<int:eduid>/delete", methods=["POST"])
 @login_required 
@@ -267,15 +317,25 @@ def delete_education(userid, eduid):
     edu = Education.query.get(eduid)
     db.session.delete(edu)
     db.session.commit()
-    flash("Education has been deleted")
     return redirect(url_for("home"))
 
 #######################################################################
 #Project Routes
 
-@app.route("/users/<int:userid>/projects/add", methods=["GET", "POST"])
+@app.route("/users/<int:userid>/projects/add", methods=["GET"])
 @login_required
-def add_user_project(userid):
+def add_user_project_get(userid):
+    """POST: Validates the form, adds project to current user
+        GET: Renders ProjectForm
+    Args:
+        userid (int): id of user being queried
+    """
+    form = ProjectForm()
+    return render_template("/add/add_project.html", form=form)
+
+@app.route("/users/<int:userid>/projects/add", methods=["POST"])
+@login_required
+def add_user_project_post(userid):
     """POST: Validates the form, adds project to current user
         GET: Renders ProjectForm
     Args:
@@ -294,12 +354,25 @@ def add_user_project(userid):
                             user_id = userid)
         db.session.add(project)
         db.session.commit()
-        return redirect(url_for("edit_profile", userid=userid))
+        return make_response(redirect(url_for("home")), 201)
     return render_template("/add/add_project.html", form=form)
 
-@app.route("/users/<int:userid>/projects/<int:projectid>/edit", methods=["GET", "POST"])
+@app.route("/users/<int:userid>/projects/<int:projectid>/edit", methods=["GET"])
 @login_required
-def edit_user_project(userid, projectid):
+def edit_user_project_get(userid, projectid):
+    """POST: Validates the form, edits the project based on form changes
+        GET: Renders ProjectForm with fields populated with current project data
+    Args:
+        userid (int): id of user being queried
+        projectid (int): id of project being queried
+    """
+    project = Project.query.get(projectid)
+    form = ProjectForm(obj=project)
+    return render_template("/edit/project_edit.html", form=form, project=project)
+
+@app.route("/users/<int:userid>/projects/<int:projectid>/edit", methods=["POST"])
+@login_required
+def edit_user_project_post(userid, projectid):
     """POST: Validates the form, edits the project based on form changes
         GET: Renders ProjectForm with fields populated with current project data
     Args:
@@ -318,8 +391,8 @@ def edit_user_project(userid, projectid):
         project.website_url = form.website_url.data
         project.description = form.description.data
         db.session.commit()
-        return redirect(url_for("edit_portfolio", userid=userid))
-    return render_template("/edit/project_edit.html", form=form, project=project)
+        return make_response(redirect(url_for("home")), 201)
+    return make_response(render_template("/edit/project_edit.html", form=form, project=project), 400)
 
 @app.route("/users/<int:userid>/projects/<int:projectid>/delete", methods=["POST"])
 @login_required 
@@ -332,7 +405,6 @@ def delete_project(userid, projectid):
     project = Project.query.get(projectid)
     db.session.delete(project)
     db.session.commit()
-    flash("Project has been deleted")
     return redirect(url_for("home"))
 
 ###############################################################################

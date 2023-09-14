@@ -82,12 +82,12 @@
               <h2>Experience</h2>
               <hr>
               {% for job in jobs %}
-        <li class="list-group-item content-edit" id="edit-job-modal-button" onClick='constructEditJobForm("{{job.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal" >
+        <li class="list-group-item content-edit" id="edit-job-modal-button" onClick='constructEditJobForm("{{job.id}}")' data-bs-toggle="modal" data-bs-target="#form-modal" style="height:auto" >
           <div class="row">
-            <div class="col">
+            <div class="col" style="height:auto">
               <p><b>{{job.title}} - {{job.company}}</b></p>
             </div>
-            <div class="col">
+            <div class="col" style="height:auto">
               <p>{{job.start_date}} - {{ job.end_date if job.current == false else "Present" }} </p>
             </div>
             </div>

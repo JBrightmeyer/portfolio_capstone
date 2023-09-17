@@ -1,14 +1,19 @@
+/* These functions provide functionality for the buttons located on the private_profile view.  The first is described but the rest follow a similar structure.  The functions are called through inline onClick properties assigned when the buttons are created*/
 
-const addProjectButton = document.getElementById("add-project-modal-button")
 function constructAddProjectForm() {
+    //URL for the form path
     const constructProjectUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/add`
+    //retrieve the HTML of the form
     axios.get(constructProjectUrl).then((data) => {
+        //assign the HTML of the placeholder form modal to the retrieved form HTML
         document.getElementById("form-modal-content").innerHTML = data.data
+        //update title on the form modal to reflect current form objective
         document.getElementById("form-modal-label").innerHTML = "Add Project"
+        //add a submit listener to the rendered form which will handle the form submission and response.  See Below
+        constructFormListener(constructProjectUrl)
     })
 }
 
-const addJobButton = document.getElementById("add-job-modal-button")
 function constructAddJobForm() {
     const constructJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/add`
     axios.get(constructJobUrl).then((data) => {
@@ -18,7 +23,6 @@ function constructAddJobForm() {
     })
 }
 
-const addEducationButton = document.getElementById("add-education-modal-button")
 function constructAddEducationForm() {
     const constructEducationUrl =`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/add`
     axios.get(constructEducationUrl).then((data) => {
@@ -28,7 +32,6 @@ function constructAddEducationForm() {
     })
 }
 
-const editProjectButton = document.getElementById("edit-project-modal-button")
 function constructEditProjectForm(projectId) {
     const editProjectUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/${projectId}/edit`
     axios.get(editProjectUrl).then((data) => {
@@ -38,7 +41,6 @@ function constructEditProjectForm(projectId) {
     })
 }
 
-const editUserButton = document.getElementById("edit-user-modal-button")
 function constructEditUserForm(userId) {
     const editUserUrl = `http://127.0.0.1:5000/users/${userId}/edit`
     axios.get(editUserUrl).then((data) => {
@@ -48,7 +50,6 @@ function constructEditUserForm(userId) {
     })
 }
 
-const editJobButton = document.getElementById("edit-job-modal-button")
 function constructEditJobForm(jobId) {
     const editJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/${jobId}/edit`
     axios.get(editJobUrl).then((data) => {
@@ -59,7 +60,6 @@ function constructEditJobForm(jobId) {
 }
 
 
-const editEducationButton = document.getElementById("edit-education-modal-button")
 function constructEditEducationForm(degreeId) {
     const editDegreeUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/${degreeId}/edit`
     axios.get(editDegreeUrl).then((data) => {
@@ -71,19 +71,25 @@ function constructEditEducationForm(degreeId) {
 
 
 
-
+//function to submission event listeners to rendered forms
 function constructFormListener(url){
+    //add event listener to the form
     document.getElementById("form").addEventListener("submit", function(e){
         e.preventDefault()
+        //gather form data
         const form = document.getElementById("form")
         const formData = new FormData(form)
         const formDataObject = {}
+        //format formData into Object to be submitted with the post request
         formData.forEach((value,key) => {
             formDataObject[key] = value;
         })
+        //submit form data to the url passed in.  
         axios.post(url, formDataObject).then((data) =>{
+            //if response is okay, reload the page to reflect new changes
             location.reload()
         }).catch((error) => {
+            //if an error is thrown, rerender the returned HTML to the placeholder form modal which will be populated with field errors
             document.getElementById("form-modal-content").innerHTML = error.response.data
         })
     })

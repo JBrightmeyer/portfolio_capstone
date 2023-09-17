@@ -11,7 +11,15 @@
 .nav-link:not(.active){
     color:white;
 }
-
+.nav-link:focus{
+    color: white !important;;
+}
+.nav-link.active:focus{
+    color: black !important;;
+}
+.nav-link:hover{
+    color: white !important;;
+}
 .link-button{
     background-color: #123C69 !important;
     color: white !important;

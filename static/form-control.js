@@ -6,9 +6,9 @@ function constructAddProjectForm() {
     //retrieve the HTML of the form
     axios.get(constructProjectUrl).then((data) => {
         //assign the HTML of the placeholder form modal to the retrieved form HTML
-        document.getElementById("form-modal-content").innerHTML = data.data
+        document.getElementById("utility-modal-content").innerHTML = data.data
         //update title on the form modal to reflect current form objective
-        document.getElementById("form-modal-label").innerHTML = "Add Project"
+        document.getElementById("utility-modal-label").innerHTML = "Add Project"
         //add a submit listener to the rendered form which will handle the form submission and response.  See Below
         constructFormListener(constructProjectUrl)
     })
@@ -17,8 +17,8 @@ function constructAddProjectForm() {
 function constructAddJobForm() {
     const constructJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/add`
     axios.get(constructJobUrl).then((data) => {
-        document.getElementById("form-modal-content").innerHTML = data.data
-        document.getElementById("form-modal-label").innerHTML = "Add Job"
+        document.getElementById("utility-modal-content").innerHTML = data.data
+        document.getElementById("utility-modal-label").innerHTML = "Add Job"
         constructFormListener(constructJobUrl)
     })
 }
@@ -26,8 +26,8 @@ function constructAddJobForm() {
 function constructAddEducationForm() {
     const constructEducationUrl =`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/add`
     axios.get(constructEducationUrl).then((data) => {
-        document.getElementById("form-modal-content").innerHTML = data.data
-        document.getElementById("form-modal-label").innerHTML = "Add Education"
+        document.getElementById("utility-modal-content").innerHTML = data.data
+        document.getElementById("utility-modal-label").innerHTML = "Add Education"
         constructFormListener(constructEducationUrl)
     })
 }
@@ -35,8 +35,8 @@ function constructAddEducationForm() {
 function constructEditProjectForm(projectId) {
     const editProjectUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/${projectId}/edit`
     axios.get(editProjectUrl).then((data) => {
-        document.getElementById("form-modal-content").innerHTML = data.data
-        document.getElementById("form-modal-label").innerHTML = "Edit Project"
+        document.getElementById("utility-modal-content").innerHTML = data.data
+        document.getElementById("utility-modal-label").innerHTML = "Edit Project"
         constructFormListener(editProjectUrl)
     })
 }
@@ -44,8 +44,8 @@ function constructEditProjectForm(projectId) {
 function constructEditUserForm(userId) {
     const editUserUrl = `http://127.0.0.1:5000/users/${userId}/edit`
     axios.get(editUserUrl).then((data) => {
-        document.getElementById("form-modal-content").innerHTML = data.data
-        document.getElementById("form-modal-label").innerHTML = "Edit User"
+        document.getElementById("utility-modal-content").innerHTML = data.data
+        document.getElementById("utility-modal-label").innerHTML = "Edit User"
         constructFormListener(editUserUrl)
     })
 }
@@ -53,8 +53,8 @@ function constructEditUserForm(userId) {
 function constructEditJobForm(jobId) {
     const editJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/${jobId}/edit`
     axios.get(editJobUrl).then((data) => {
-        document.getElementById("form-modal-content").innerHTML = data.data
-        document.getElementById("form-modal-label").innerHTML = "Edit Job"
+        document.getElementById("utility-modal-content").innerHTML = data.data
+        document.getElementById("utility-modal-label").innerHTML = "Edit Job"
         constructFormListener(editJobUrl)
     })
 }
@@ -63,13 +63,19 @@ function constructEditJobForm(jobId) {
 function constructEditEducationForm(degreeId) {
     const editDegreeUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/${degreeId}/edit`
     axios.get(editDegreeUrl).then((data) => {
-        document.getElementById("form-modal-content").innerHTML = data.data
-        document.getElementById("form-modal-label").innerHTML = "Edit Education"
+        document.getElementById("utility-modal-content").innerHTML = data.data
+        document.getElementById("utility-modal-label").innerHTML = "Edit Education"
         constructFormListener(editDegreeUrl)
     })
 }
 
 
+function constructProjectReadMe(owner_name, project_name, project_title){
+    axios.get(`https://api.github.com/repos/${owner_name}/${project_name}/readme`, {headers:{"accept":"application/vnd.github.html+json"}}).then((data) => {
+        document.querySelector("#utility-modal-label").innerHTML = project_title
+        document.querySelector("#utility-modal-content").innerHTML = data.data
+    })
+}
 
 //function to submission event listeners to rendered forms
 function constructFormListener(url){
@@ -90,7 +96,7 @@ function constructFormListener(url){
             location.reload()
         }).catch((error) => {
             //if an error is thrown, rerender the returned HTML to the placeholder form modal which will be populated with field errors
-            document.getElementById("form-modal-content").innerHTML = error.response.data
+            document.getElementById("utility-modal-content").innerHTML = error.response.data
         })
     })
 }

@@ -8,9 +8,9 @@ from sqlalchemy import exc
 app = Flask(__name__)
 
 app.app_context().push()
-# app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///portfolio"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://nwhaufdl:J4wxtg119DBhEt3BRMMwiWgH2b9duhwt@peanut.db.elephantsql.com/nwhaufdl"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['SECRET_KEY']="admin"
+app.config['SECRET_KEY']="admin"
 
 login_manager = LoginManager()
 login_manager.init_app(app)

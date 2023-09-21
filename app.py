@@ -212,6 +212,7 @@ def edit_user_job_post(userid, jobid):
     """
     job = Job.query.get(jobid)
     form = JobForm(obj=job)
+    print(form.title.data)
     if form.validate_on_submit():
         job.title = form.title.data 
         job.company = form.company.data

@@ -96,7 +96,7 @@ function constructFormListener(url){
             location.reload()
         }).catch((error) => {
             //if an error is thrown, rerender the returned HTML to the placeholder form modal which will be populated with field errors
-            console.log(error.response.data)
+            console.log(error)
             document.getElementById("utility-modal-content").innerHTML = error.response.data
         })
     })

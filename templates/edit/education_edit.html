@@ -22,7 +22,7 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn link-button" form="edit-school">Edit Education</button>
+        <button type="submit" class="btn link-button" form="form">Edit Education</button>
         <button type="submit" class="btn btn-danger" form="delete-school">Delete Education</button>
     </form>
     <form action="/users/{{current_user.id}}/education/{{school.id}}/delete" method="POST" id="delete-school">

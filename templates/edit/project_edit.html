@@ -24,7 +24,7 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        <button type="submit" class="btn link-button" form="edit-project">Edit Project</button>
+        <button type="submit" class="btn link-button" form="form">Edit Project</button>
         <button type="submit" class="btn btn-danger" form="delete-project">Delete Project</button>
     </form>
     <form action="/users/{{current_user.id}}/projects/{{project.id}}/delete" method="POST" id="delete-project"></form>

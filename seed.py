@@ -6,32 +6,75 @@ db.drop_all()
 db.create_all()
 
 #registers test user
-user = User.register("Test","Test", "test", "test", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti molestias repellat, soluta fugit beatae nam nisi dicta eligendi repudiandae hic obcaecati nihil ea magni, sit tempore eveniet iste. Voluptate, nam.", "yes", "yes", "yes")
+user = User.register("Jacob","Brightmeyer", "test", "test", "Detail oriented engineer with full stack software development experience. A fast learner with indefatigable work ethic and a proven track record of rising to the occasion and meeting tight deadlines. Experienced with task prioritization, competing deadlines, and working in Agile environments.", "https://github.com/JBrightmeyer", "https://www.linkedin.com/in/jacob-brightmeyer/")
 
 #adds test job titles
-for i in range(3):
-    job = Job(title=f"Job Title {i}",
-              company = "test company",
-              start_date = f"7/{5 + i}/2020",
-              end_date=f"7/{10+i}/2023",
+job = Job(title=f"Technical Analyst",
+              company = "Protolabs",
+              start_date = f"4/1/2018",
+              end_date=f"9/21/2023",
+              current=True,
+              user=user.id,
+              description="As a founding member, developed standard operating procedures for department and ensured compliance to those SOPs - Used proprietary and commercial software to analyze part files and identify issues - Prepared Risk Analysis reports communicating project risks to technical and non-technical audiences - Created a training management web application for use by the quality department using HTML/CSS/JavaScript with Flask/Postgres.")
+db.session.add(job)
+db.session.commit()
+
+job = Job(title=f"Build Prep Primary",
+              company = "Protolabs",
+              start_date = f"4/1/2015",
+              end_date=f"4/1/2018",
               current=False,
               user=user.id,
-              description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum ullam animi tenetur? Autem amet porro aspernatur molestiae facere voluptatibus, ex maxime delectus velit impedit, unde et animi ea quisquam! Sequi.")
-    db.session.add(job)
-    db.session.commit()
+              description="Managed personnel and work schedule to optimize project throughput - Altered AutoCAD files to build effectively in our 3D printing machines - Designed and executed an environmental test using Arduino sensors with C++ and Microsoft Excel to analyze the resulting dataset")
+db.session.add(job)
+db.session.commit()
+
+
+        
+# for i in range(3):
+#     job = Job(title=f"Job Title {i}",
+#               company = "test company",
+#               start_date = f"7/{5 + i}/2020",
+#               end_date=f"7/{10+i}/2023",
+#               current=False,
+#               user=user.id,
+#               description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum ullam animi tenetur? Autem amet porro aspernatur molestiae facere voluptatibus, ex maxime delectus velit impedit, unde et animi ea quisquam! Sequi.")
+#     db.session.add(job)
+#     db.session.commit()
         
 
 #adds test educations
-for i in range(2):
-    degree = Education(institution=f"Test School {i}",
-                       degree=f"Test Degree {i}",
-                       graduation_date = "7/5/2023",
-                       start_date = "7/5/2020",
+
+degree = Education(institution=f"Springboard",
+                       degree=f"Software Engineering Career Track",
+                       graduation_date = "1/1/2024",
+                       start_date = "4/10/2023",
                        graduated = False,
-                       description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum ullam animi tenetur? Autem amet porro aspernatur molestiae facere voluptatibus, ex maxime delectus velit impedit, unde et animi ea quisquam! Sequi.",
+                       description = "Experience building full stack web applications and REST APIs using TDD and OOP - Experience using both python and JavaScript libraries such as Jest and Jasmine to perform unit testing on web applications and API's - Learned programming best practices for software design and became familiar with modern frameworks/libraries for front-end and back-end development as well as the software development lifecycle - Gained proficiency in data structures and algorithms through application development and targeted practice",
                        user = user.id)
-    db.session.add(degree)
-    db.session.commit()
+db.session.add(degree)
+db.session.commit()
+
+degree = Education(institution=f"North Carolina State University",
+                       degree=f"BS Chemical Engineering",
+                       graduation_date = "9/1/2017",
+                       start_date = "6/1/2020",
+                       graduated = True,
+                       description = "Co-Authored a research paper published in the Journal of Internal Medicine on Smartphone Diagnostic Technology - Used C++ Programming to create a USB Fluorescent Microscope with Arduino - Coordinated USB Fluorescent Microscope project using Kanban boards",
+                       user = user.id)
+db.session.add(degree)
+db.session.commit()
+
+# for i in range(2):
+#     degree = Education(institution=f"Test School {i}",
+#                        degree=f"Test Degree {i}",
+#                        graduation_date = "7/5/2023",
+#                        start_date = "7/5/2020",
+#                        graduated = False,
+#                        description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum ullam animi tenetur? Autem amet porro aspernatur molestiae facere voluptatibus, ex maxime delectus velit impedit, unde et animi ea quisquam! Sequi.",
+#                        user = user.id)
+#     db.session.add(degree)
+#     db.session.commit()
     
 #adds example project which is my own
 project = Project(repository="portfolio_website",
@@ -45,10 +88,10 @@ project = Project(repository="portfolio_website",
 db.session.add(project)
 db.session.commit()
 
-#adds example skills
-skills = ["Swift as a coursing river", "All the force of a great typhoon", "All the Strength of a raging fire", "Mysterious as the dark side of the moon"]
-for skill in skills:
-    new_skill = Skill(user=user.id,
-                      description = skill)
-    db.session.add(new_skill)
-    db.session.commit()
+# #adds example skills
+# skills = ["Swift as a coursing river", "All the force of a great typhoon", "All the Strength of a raging fire", "Mysterious as the dark side of the moon"]
+# for skill in skills:
+#     new_skill = Skill(user=user.id,
+#                       description = skill)
+#     db.session.add(new_skill)
+#     db.session.commit()

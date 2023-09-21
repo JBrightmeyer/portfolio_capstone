@@ -90,6 +90,7 @@ function constructFormListener(url){
         formData.forEach((value,key) => {
             formDataObject[key] = value;
         })
+        console.log(formDataObject)
         //submit form data to the url passed in.  
         axios.post(url, formDataObject).then((data) =>{
             //if response is okay, reload the page to reflect new changes

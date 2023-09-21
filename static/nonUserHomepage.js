@@ -11,7 +11,7 @@ login_Form.addEventListener("submit", async function(event){
         const response = await axios.post("/api/login", formData);
         if (response.status === 200){
             //redirect to correct location if submission data is correct
-            window.location.href=`https://portfolio-s6uu.onrender.com/private/${response.data.user}`
+            window.location.href=`http://127.0.0.1:5000/private/${response.data.user}`
         }
     } catch (error) {
         //if error is returned, console log it
@@ -29,7 +29,7 @@ register_Form.addEventListener("submit", async function(event){
         const response = await axios.post("/api/register", formData);
         if (response.status === 200){
             //redirect to correct location if submission data is correct
-            window.location.href=`https://portfolio-s6uu.onrender.com/private/${response.data.user}`
+            window.location.href=`http://127.0.0.1:5000/private/${response.data.user}`
         }
     } catch(error) {
         //if error is returned, console log it

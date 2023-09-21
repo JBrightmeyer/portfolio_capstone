@@ -2,7 +2,7 @@
 
 function constructAddProjectForm() {
     //URL for the form path
-    const constructProjectUrl = `https://portfolio-s6uu.onrender.com/users/${document.querySelector("#user").getAttribute("data-id")}/projects/add`
+    const constructProjectUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/add`
     //retrieve the HTML of the form
     axios.get(constructProjectUrl).then((data) => {
         //assign the HTML of the placeholder form modal to the retrieved form HTML
@@ -15,7 +15,7 @@ function constructAddProjectForm() {
 }
 
 function constructAddJobForm() {
-    const constructJobUrl = `https://portfolio-s6uu.onrender.com/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/add`
+    const constructJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/add`
     axios.get(constructJobUrl).then((data) => {
         document.getElementById("utility-modal-content").innerHTML = data.data
         document.getElementById("utility-modal-label").innerHTML = "Add Job"
@@ -24,7 +24,7 @@ function constructAddJobForm() {
 }
 
 function constructAddEducationForm() {
-    const constructEducationUrl =`https://portfolio-s6uu.onrender.com/users/${document.querySelector("#user").getAttribute("data-id")}/education/add`
+    const constructEducationUrl =`http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/add`
     axios.get(constructEducationUrl).then((data) => {
         document.getElementById("utility-modal-content").innerHTML = data.data
         document.getElementById("utility-modal-label").innerHTML = "Add Education"
@@ -33,7 +33,7 @@ function constructAddEducationForm() {
 }
 
 function constructEditProjectForm(projectId) {
-    const editProjectUrl = `https://portfolio-s6uu.onrender.com/users/${document.querySelector("#user").getAttribute("data-id")}/projects/${projectId}/edit`
+    const editProjectUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/projects/${projectId}/edit`
     axios.get(editProjectUrl).then((data) => {
         document.getElementById("utility-modal-content").innerHTML = data.data
         document.getElementById("utility-modal-label").innerHTML = "Edit Project"
@@ -42,7 +42,7 @@ function constructEditProjectForm(projectId) {
 }
 
 function constructEditUserForm(userId) {
-    const editUserUrl = `https://portfolio-s6uu.onrender.com/users/${userId}/edit`
+    const editUserUrl = `http://127.0.0.1:5000/users/${userId}/edit`
     axios.get(editUserUrl).then((data) => {
         document.getElementById("utility-modal-content").innerHTML = data.data
         document.getElementById("utility-modal-label").innerHTML = "Edit User"
@@ -51,7 +51,7 @@ function constructEditUserForm(userId) {
 }
 
 function constructEditJobForm(jobId) {
-    const editJobUrl = `https://portfolio-s6uu.onrender.com/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/${jobId}/edit`
+    const editJobUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/jobs/${jobId}/edit`
     axios.get(editJobUrl).then((data) => {
         document.getElementById("utility-modal-content").innerHTML = data.data
         document.getElementById("utility-modal-label").innerHTML = "Edit Job"
@@ -61,7 +61,7 @@ function constructEditJobForm(jobId) {
 
 
 function constructEditEducationForm(degreeId) {
-    const editDegreeUrl = `https://portfolio-s6uu.onrender.com/users/${document.querySelector("#user").getAttribute("data-id")}/education/${degreeId}/edit`
+    const editDegreeUrl = `http://127.0.0.1:5000/users/${document.querySelector("#user").getAttribute("data-id")}/education/${degreeId}/edit`
     axios.get(editDegreeUrl).then((data) => {
         document.getElementById("utility-modal-content").innerHTML = data.data
         document.getElementById("utility-modal-label").innerHTML = "Edit Education"

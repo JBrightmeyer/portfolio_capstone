@@ -3,7 +3,7 @@
 //handles population of the user projects page of the profile
 document.addEventListener("DOMContentLoaded", function(){
     //gets list of projects from the backend using the "user" div inside of the private_profile html document
-    axios.get(`http://127.0.0.1:5000/api/projects/${document.querySelector("#user").getAttribute("data-id")}`)
+    axios.get(`https://portfolio-s6uu.onrender.com/api/projects/${document.querySelector("#user").getAttribute("data-id")}`)
         .then((projects) => {
             //checks to see if there are any projects available
             if(projects.data.length > 0){

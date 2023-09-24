@@ -1,6 +1,6 @@
 # portfolio_capstone
 
-*NOT CURRENTLY DEPLOYED*
+*Currently Deployed at https://portfolio-s6uu.onrender.com*
 
 API - https://docs.github.com/en/rest/quickstart?apiVersion=2022-11-28&tool=javascript
 
@@ -11,5 +11,5 @@ The project supports users signing up with information regarding their github ur
 Database Schema can be found in the "database_schema" section of the root directory.
 
 Future Goals: 
- - Update Entire Backend to rely on a RESTful API.  Move all editing/adding capabilities to responsive javascript requests and bring app down to 6 different pages.
+ - Convert to RESTful API for the backend, update frontend to use React.js or another front end framework
  - Add Unit Tests so as to not just rely on Functional Testing

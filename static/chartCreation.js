@@ -1,4 +1,3 @@
-//TODO Considering changing the ReadMe population from an automatic process to a "per click" process.  Unsure of which will lead to fewer API calls at this time.  The "on-Click" call would allow me use only one placeholder modal which would simplify the HTML
 
 //handles population of the user projects page of the profile
 document.addEventListener("DOMContentLoaded", function(){
